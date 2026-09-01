@@ -1,4 +1,4 @@
-# Política de contenido — alethia-catalog
+# Política de contenido — aletheia-catalog
 
 El software es libre; el contenido es de sus autores. Este catálogo distribuye módulos y
 cada módulo declara su licencia. Modelo basado en la política de The SWORD Project /
@@ -14,7 +14,7 @@ CrossWire Bible Society (25 años operando esta dinámica), adaptado a un catál
    la app ("Acerca de este módulo"). Una fuente de verdad: el manifest del módulo.
 4. **Ante la duda, fuera.** Si un recurso es ambiguo, se retira del catálogo hasta
    aclarar su estado (práctica de auditoría de CrossWire).
-5. **Contacto público.** `copyright@alethia.app` (buzón dedicado) listado en el README y
+5. **Contacto público.** `copyright@aletheia.app` (buzón dedicado) listado en el README y
    en la app para reportes de infracción. Se responde y retira sin fricción.
 
 ## Vetting de un módulo nuevo (checklist)
@@ -32,7 +32,7 @@ En la app, sección Biblioteca:
 
 > Los módulos disponibles provienen de fuentes de dominio público o con licencias abiertas,
 > y se distribuyen "tal cual" con su licencia declarada. Si crees que algún contenido
-> infringe derechos, contáctanos en copyright@alethia.app y lo retiraremos.
+> infringe derechos, contáctanos en copyright@aletheia.app y lo retiraremos.
 
 Fuente de inspiración literal (CrossWire, Install Manager): los repositorios de terceros
 pueden contener módulos no legítimamente distribuibles; el responsable es quien publica el

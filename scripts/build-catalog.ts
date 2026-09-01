@@ -4,7 +4,7 @@ import { sha256Hex } from "./lib/amf";
 
 const RELEASE_BASE =
   process.env.CATALOG_RELEASE_BASE ??
-  "https://github.com/yojananyosef/alethia-catalog/releases/latest/download";
+  "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download";
 
 const defs = (await Bun.file(new URL("./modules-v1.json", import.meta.url)).json()) as any[];
 const distDir = new URL("../dist/", import.meta.url).pathname;

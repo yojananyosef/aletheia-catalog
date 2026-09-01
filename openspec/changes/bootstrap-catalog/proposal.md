@@ -2,7 +2,7 @@
 
 ## Why
 
-Alethia Platform necesita una fuente de contenido legalmente limpia y técnicamente
+Aletheia Platform necesita una fuente de contenido legalmente limpia y técnicamente
 eficiente. El free library de Logos demuestra que el contenido dominio público basta para
 un producto completo (su free tier de $199 es ~100% PD), y CrossWire ofrece esos mismos
 recursos como módulos SWORD descargables. Falta un formato moderno, determinista y
@@ -29,7 +29,7 @@ declarada en cada módulo.
 
 ## Non-Goals
 
-- No reutilizar código de `alethia-bridge`/`alethia-modules` (solo aprendizaje).
+- No reutilizar código de `aletheia-bridge`/`aletheia-modules` (solo aprendizaje).
 - No runtime SWORD: el ETL convierte a .amod; la app nunca lee formatos SWORD.
 - No catálogos de terceros ni importación de usuario en v1.
 - No audio, imágenes, strongs inline ni módulos general-book en v1 (APF puede requerir
@@ -38,6 +38,6 @@ declarada en cada módulo.
 ## Impact
 
 - Repo nuevo, sin dependencia del ecosistema existente.
-- Consumidor: `alethia-platform` (repo hermano, se bootstrappea después).
+- Consumidor: `aletheia-platform` (repo hermano, se bootstrappea después).
 - Entregables verificables: doble build reproducible por módulo + textos esperados
   (Gen 1:1, Sal 119:105, Ap 22:21) en tests.

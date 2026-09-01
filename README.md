@@ -1,7 +1,7 @@
-# alethia-catalog
+# aletheia-catalog
 
-Catálogo oficial de módulos bíblicos **`.amod`** (Alethia Module Format v1) para
-[Alethia Platform](https://github.com/yojananyosef/alethia-platform).
+Catálogo oficial de módulos bíblicos **`.amod`** (Aletheia Module Format v1) para
+[Aletheia Platform](https://github.com/yojananyosef/aletheia-platform).
 
 ## Qué es esto
 

@@ -1,8 +1,8 @@
 {
   "format": "amf-catalog",
   "version": 1,
-  "generatedAt": "2026-09-01T15:58:01.542Z",
-  "releaseBase": "https://github.com/yojananyosef/alethia-catalog/releases/latest/download",
+  "generatedAt": "2026-09-01T16:12:16.956Z",
+  "releaseBase": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download",
   "modules": [
     {
       "id": "ASV",
@@ -27,7 +27,7 @@
       "minReaderVersion": 1,
       "sizeBytes": 3393547,
       "sha256": "374780679b03a32ab08842392d6b0e7b3512baf6bf3c3abe2a6f4e5b53ccdba5",
-      "downloadUrl": "https://github.com/yojananyosef/alethia-catalog/releases/latest/download/ASV.amod",
+      "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/ASV.amod",
       "buildTool": "amf-1.0"
     },
     {
@@ -53,7 +53,7 @@
       "minReaderVersion": 1,
       "sizeBytes": 3553961,
       "sha256": "c3b094c6ae8a1f3642f6c09bcb5afc1910da24f96cd1b82e024b8ebced0d1cad",
-      "downloadUrl": "https://github.com/yojananyosef/alethia-catalog/releases/latest/download/KJV.amod",
+      "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/KJV.amod",
       "buildTool": "amf-1.0"
     },
     {
@@ -79,7 +79,7 @@
       "minReaderVersion": 1,
       "sizeBytes": 538800,
       "sha256": "6de7e01c9b9b180b09b8643be4aa81f4dd30ed295106340f7ceafa5e2e71eafd",
-      "downloadUrl": "https://github.com/yojananyosef/alethia-catalog/releases/latest/download/SME.amod",
+      "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/SME.amod",
       "buildTool": "amf-1.0"
     },
     {
@@ -105,7 +105,7 @@
       "minReaderVersion": 1,
       "sizeBytes": 2420521,
       "sha256": "9d714bb1f0eec31df65d2fdba531d14f8201e7321bead555e6b0c4b3f5174477",
-      "downloadUrl": "https://github.com/yojananyosef/alethia-catalog/releases/latest/download/SMITH.amod",
+      "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/SMITH.amod",
       "buildTool": "amf-1.0"
     }
   ]
