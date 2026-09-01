@@ -39,3 +39,22 @@
 - [x] `.github/workflows/release.yml`: tag v* → tests + builds + verificación de determinismo + release
 - [x] `docs/content-policy.md` + `docs/provenance/PROVENANCE.md` con evidencia por módulo
 - [ ] Publicar repo + primera release taggeada con los 4 módulos v1
+
+## Lote v1.1 — habilita las fases F10-F12 de aletheia-platform
+
+Coordina con `aletheia-platform` (specs study/workspace): sin este lote, guías/factbook/
+idiomas originales quedan bloqueados. Fuentes CrossWire (drivers ya implementados en ETL
+o conocidos):
+
+- [ ] TSK (Treasury of Scripture Knowledge, comentario — resolver versificación extendida)
+- [ ] Nave (Topical Bible, backbone de entidades del Factbook — rawld4)
+- [ ] Easton, ISBE, Hitchcock (diccionarios — rawld4)
+- [ ] StrongsGreek, StrongsHebrew (lexicons con strongs — rawld4)
+- [ ] Abbott-Smith (lexicon con strongs — rawld4)
+- [ ] Robinson (morfología griega — rawld4 con claves strongs)
+- [ ] WLC, SBLGNT, WHNU (biblias originales — zText4/zCom, verificar versificación y
+      strongs por palabra; puede requerir extensión AMF `words` o columnas strongs)
+- [ ] Módulo armonía de pasajes paralelos (fuente PD a definir)
+- [ ] Decisión de formato: cómo almacenar strongs por palabra (columna strongs por versículo
+      vs tabla words) — spec AMF v1.1 antes de construir
+
