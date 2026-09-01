@@ -1,0 +1,17 @@
+{
+  "name": "alethia-catalog",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Catálogo oficial de módulos bíblicos .amod (AMF v1) para Alethia Platform",
+  "type": "module",
+  "scripts": {
+    "import": "bun run scripts/import-sword.ts",
+    "catalog": "bun run scripts/build-catalog.ts",
+    "test": "bun test"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.2.0",
+    "fflate": "^0.8.2",
+    "typescript": "^5.9.3"
+  }
+}

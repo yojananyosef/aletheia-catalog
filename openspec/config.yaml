@@ -1,0 +1,18 @@
+schema: spec-driven
+
+# Contexto del proyecto (se muestra a la IA al crear artefactos)
+context: |
+  alethia-catalog: catálogo oficial de módulos bíblicos .amod (AMF v1) para Alethia Platform.
+  ETL en Bun (bun:sqlite + fflate + node:zlib) que consume módulos SWORD de CrossWire
+  (drivers zText4/zCom4/RawText/rawld4) y produce bundles deterministas (sha256 reproducible).
+  Lote v1 = espejo estricto del free library de Logos: ASV, KJV, WEB, JFB, Vincent, SME,
+  APF, Creeds, Smith — todo Public Domain.
+  Politica de contenido: modelo CrossWire (vetting PD/CC, disclaimers, contacto público).
+  Distribución: GitHub Releases + catalog/catalog.json (sha256 + downloadUrl).
+  Convenciones: español en docs/UI, código sin comentarios salvo necesidad real,
+  TypeScript strict, commits convencionales.
+
+rules:
+  tasks:
+    - Cada tarea termina verificable (build verde, doble build reproducible o texto esperado)
+    - Ningún módulo se publica sin evidencia de licencia en docs/provenance/

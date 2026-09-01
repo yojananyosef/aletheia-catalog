@@ -1,0 +1,112 @@
+{
+  "format": "amf-catalog",
+  "version": 1,
+  "generatedAt": "2026-09-01T15:58:01.542Z",
+  "releaseBase": "https://github.com/yojananyosef/alethia-catalog/releases/latest/download",
+  "modules": [
+    {
+      "id": "ASV",
+      "type": "bible",
+      "name": "American Standard Version",
+      "shortName": "ASV",
+      "language": "en",
+      "version": "1.0.0",
+      "publisher": "CrossWire Bible Society",
+      "license": "PublicDomain",
+      "copyright": "1901 American Standard Version, Public Domain",
+      "attribution": "American Standard Version (1901), Public Domain",
+      "source": "https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=ASV",
+      "features": {
+        "hasStrongs": false,
+        "hasMorphology": false,
+        "hasFootnotes": true,
+        "hasHeadings": false
+      },
+      "amf": 1,
+      "schemaVersion": 1,
+      "minReaderVersion": 1,
+      "sizeBytes": 3393547,
+      "sha256": "374780679b03a32ab08842392d6b0e7b3512baf6bf3c3abe2a6f4e5b53ccdba5",
+      "downloadUrl": "https://github.com/yojananyosef/alethia-catalog/releases/latest/download/ASV.amod",
+      "buildTool": "amf-1.0"
+    },
+    {
+      "id": "KJV",
+      "type": "bible",
+      "name": "The Holy Bible: King James Version",
+      "shortName": "KJV",
+      "language": "en",
+      "version": "1.0.0",
+      "publisher": "CrossWire Bible Society",
+      "license": "PublicDomain",
+      "copyright": "1769 King James Version, Public Domain",
+      "attribution": "King James Version (1769), Public Domain",
+      "source": "https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=KJV",
+      "features": {
+        "hasStrongs": true,
+        "hasMorphology": false,
+        "hasFootnotes": true,
+        "hasHeadings": true
+      },
+      "amf": 1,
+      "schemaVersion": 1,
+      "minReaderVersion": 1,
+      "sizeBytes": 3553961,
+      "sha256": "c3b094c6ae8a1f3642f6c09bcb5afc1910da24f96cd1b82e024b8ebced0d1cad",
+      "downloadUrl": "https://github.com/yojananyosef/alethia-catalog/releases/latest/download/KJV.amod",
+      "buildTool": "amf-1.0"
+    },
+    {
+      "id": "SME",
+      "type": "devotion",
+      "name": "C. H. Spurgeon's Morning and Evening: Daily Readings",
+      "shortName": "SME",
+      "language": "en",
+      "version": "1.0.0",
+      "publisher": "CrossWire Bible Society",
+      "license": "PublicDomain",
+      "copyright": "Morning and Evening (1869), Public Domain",
+      "attribution": "C. H. Spurgeon's Morning and Evening, Public Domain",
+      "source": "https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=SME",
+      "features": {
+        "hasStrongs": false,
+        "hasMorphology": false,
+        "hasFootnotes": false,
+        "hasHeadings": false
+      },
+      "amf": 1,
+      "schemaVersion": 1,
+      "minReaderVersion": 1,
+      "sizeBytes": 538800,
+      "sha256": "6de7e01c9b9b180b09b8643be4aa81f4dd30ed295106340f7ceafa5e2e71eafd",
+      "downloadUrl": "https://github.com/yojananyosef/alethia-catalog/releases/latest/download/SME.amod",
+      "buildTool": "amf-1.0"
+    },
+    {
+      "id": "SMITH",
+      "type": "dictionary",
+      "name": "Smith's Bible Dictionary",
+      "shortName": "Smith",
+      "language": "en",
+      "version": "1.0.0",
+      "publisher": "CrossWire Bible Society",
+      "license": "PublicDomain",
+      "copyright": "Smith's Bible Dictionary (1884), Public Domain",
+      "attribution": "Smith's Bible Dictionary (1884), Public Domain",
+      "source": "https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=Smith",
+      "features": {
+        "hasStrongs": false,
+        "hasMorphology": false,
+        "hasFootnotes": false,
+        "hasHeadings": false
+      },
+      "amf": 1,
+      "schemaVersion": 1,
+      "minReaderVersion": 1,
+      "sizeBytes": 2420521,
+      "sha256": "9d714bb1f0eec31df65d2fdba531d14f8201e7321bead555e6b0c4b3f5174477",
+      "downloadUrl": "https://github.com/yojananyosef/alethia-catalog/releases/latest/download/SMITH.amod",
+      "buildTool": "amf-1.0"
+    }
+  ]
+}

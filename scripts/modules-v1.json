@@ -1,0 +1,230 @@
+[
+  {
+    "id": "ASV",
+    "type": "bible",
+    "swordModule": "ASV",
+    "name": "American Standard Version",
+    "shortName": "ASV",
+    "language": "en",
+    "direction": "ltr",
+    "version": "1.0.0",
+    "publisher": "CrossWire Bible Society",
+    "license": "PublicDomain",
+    "copyright": "1901 American Standard Version, Public Domain",
+    "source": "https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=ASV",
+    "attribution": "American Standard Version (1901), Public Domain",
+    "features": {
+      "hasStrongs": false,
+      "hasMorphology": false,
+      "hasFootnotes": true,
+      "hasHeadings": false
+    },
+    "checks": {
+      "GEN 1:1": "created the heavens and the earth",
+      "PSA 119:105": "lamp unto my feet",
+      "REV 22:21": "Amen"
+    }
+  },
+  {
+    "id": "KJV",
+    "type": "bible",
+    "swordModule": "KJV",
+    "name": "The Holy Bible: King James Version",
+    "shortName": "KJV",
+    "language": "en",
+    "direction": "ltr",
+    "version": "1.0.0",
+    "publisher": "CrossWire Bible Society",
+    "license": "PublicDomain",
+    "copyright": "1769 King James Version, Public Domain",
+    "source": "https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=KJV",
+    "attribution": "King James Version (1769), Public Domain",
+    "features": {
+      "hasStrongs": true,
+      "hasMorphology": false,
+      "hasFootnotes": true,
+      "hasHeadings": true
+    },
+    "checks": {
+      "GEN 1:1": "created the heaven and the earth",
+      "PSA 119:105": "lamp unto my feet",
+      "REV 22:21": "Amen"
+    }
+  },
+  {
+    "id": "WEB",
+    "type": "bible",
+    "swordModule": "WEB",
+    "sourceUrl": "https://ebible.org/sword/zip/engweb2025eb.zip",
+    "deferred": "módulo fuente usa versificación extendida (39275 slots, con apócrifos); requiere soporte multi-versificación — v1.1 o ETL USFM desde ebible.org",
+    "name": "World English Bible",
+    "shortName": "WEB",
+    "language": "en",
+    "direction": "ltr",
+    "version": "1.0.0",
+    "publisher": "CrossWire Bible Society",
+    "license": "PublicDomain",
+    "copyright": "World English Bible, Public Domain",
+    "source": "https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=WEB",
+    "attribution": "World English Bible, Public Domain",
+    "features": {
+      "hasStrongs": false,
+      "hasMorphology": false,
+      "hasFootnotes": false,
+      "hasHeadings": true
+    },
+    "checks": {
+      "GEN 1:1": "created the heavens and the earth",
+      "PSA 119:105": "lamp for my feet",
+      "REV 22:21": "saints"
+    }
+  },
+  {
+    "id": "JFB",
+    "type": "commentary",
+    "swordModule": "JFB",
+    "name": "Jamieson, Fausset, Brown Bible Commentary",
+    "shortName": "JFB",
+    "language": "en",
+    "direction": "ltr",
+    "version": "1.0.0",
+    "publisher": "CrossWire Bible Society",
+    "license": "PublicDomain",
+    "copyright": "Jamieson, Fausset and Brown Commentary (1871), Public Domain",
+    "source": "https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=JFB",
+    "attribution": "Jamieson, Fausset, Brown Bible Commentary, Public Domain",
+    "features": {
+      "hasStrongs": false,
+      "hasMorphology": false,
+      "hasFootnotes": false,
+      "hasHeadings": false
+    },
+    "checks": {
+      "GEN 1:1": "God"
+    },
+    "deferred": "versificación del módulo fuente excede KJV66 (28938+9895 slots vs 24115+8246): requiere soporte multi-versificación — v1.1"
+  },
+  {
+    "id": "VINCENT",
+    "type": "commentary",
+    "swordModule": "Vincent",
+    "name": "Vincent's Word Studies in the New Testament",
+    "shortName": "Vincent",
+    "language": "en",
+    "direction": "ltr",
+    "version": "1.0.0",
+    "publisher": "CrossWire Bible Society",
+    "license": "PublicDomain",
+    "copyright": "Vincent's Word Studies (1887), Public Domain",
+    "source": "https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=Vincent",
+    "attribution": "Vincent's Word Studies in the New Testament, Public Domain",
+    "features": {
+      "hasStrongs": false,
+      "hasMorphology": false,
+      "hasFootnotes": false,
+      "hasHeadings": false
+    },
+    "checks": {
+      "JHN 1:1": "Word"
+    },
+    "deferred": "igual que JFB: verificación de slots requerida — v1.1"
+  },
+  {
+    "id": "SME",
+    "type": "devotion",
+    "swordModule": "SME",
+    "name": "C. H. Spurgeon's Morning and Evening: Daily Readings",
+    "shortName": "SME",
+    "language": "en",
+    "direction": "ltr",
+    "version": "1.0.0",
+    "publisher": "CrossWire Bible Society",
+    "license": "PublicDomain",
+    "copyright": "Morning and Evening (1869), Public Domain",
+    "source": "https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=SME",
+    "attribution": "C. H. Spurgeon's Morning and Evening, Public Domain",
+    "features": {
+      "hasStrongs": false,
+      "hasMorphology": false,
+      "hasFootnotes": false,
+      "hasHeadings": false
+    },
+    "checks": {
+      "keys": [
+        "01.01"
+      ]
+    }
+  },
+  {
+    "id": "SMITH",
+    "type": "dictionary",
+    "swordModule": "Smith",
+    "name": "Smith's Bible Dictionary",
+    "shortName": "Smith",
+    "language": "en",
+    "direction": "ltr",
+    "version": "1.0.0",
+    "publisher": "CrossWire Bible Society",
+    "license": "PublicDomain",
+    "copyright": "Smith's Bible Dictionary (1884), Public Domain",
+    "source": "https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=Smith",
+    "attribution": "Smith's Bible Dictionary (1884), Public Domain",
+    "features": {
+      "hasStrongs": false,
+      "hasMorphology": false,
+      "hasFootnotes": false,
+      "hasHeadings": false
+    },
+    "checks": {
+      "keys": [
+        "Aaron"
+      ]
+    }
+  },
+  {
+    "id": "APF",
+    "type": "dictionary",
+    "swordModule": "APF",
+    "deferred": "driver genbook (rawGenBook) pendiente en v1",
+    "name": "The Apostolic Fathers in English",
+    "shortName": "APF",
+    "language": "en",
+    "direction": "ltr",
+    "version": "0.0.0",
+    "publisher": "CrossWire Bible Society",
+    "license": "PublicDomain",
+    "copyright": "Apostolic Fathers (LightFoot), Public Domain",
+    "source": "https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=APF",
+    "attribution": "The Apostolic Fathers in English, Public Domain",
+    "features": {
+      "hasStrongs": false,
+      "hasMorphology": false,
+      "hasFootnotes": false,
+      "hasHeadings": true
+    },
+    "checks": {}
+  },
+  {
+    "id": "CREEDS",
+    "type": "dictionary",
+    "swordModule": null,
+    "deferred": "ETL manual desde CCEL (textos PD) pendiente en v1",
+    "name": "Historic Creeds and Confessions",
+    "shortName": "Creeds",
+    "language": "en",
+    "direction": "ltr",
+    "version": "0.0.0",
+    "publisher": "alethia-catalog",
+    "license": "PublicDomain",
+    "copyright": "Historic Creeds and Confessions, Public Domain",
+    "source": "https://ccel.org/",
+    "attribution": "Historic Creeds and Confessions, Public Domain",
+    "features": {
+      "hasStrongs": false,
+      "hasMorphology": false,
+      "hasFootnotes": false,
+      "hasHeadings": false
+    },
+    "checks": {}
+  }
+]

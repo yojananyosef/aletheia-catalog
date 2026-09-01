@@ -1,0 +1,7 @@
+node_modules/
+dist/*.amod
+tmp/
+cache/
+*.log
+.DS_Store
+.github/
