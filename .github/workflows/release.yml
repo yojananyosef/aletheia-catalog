@@ -1,0 +1,43 @@
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install --frozen-lockfile
+      - run: bun run typecheck
+      - run: bun test
+      # Construye los 4 módulos v1 verificados (requiere red → CrossWire).
+      # El propio import-sword.ts hace doble build y compara sha256 (determinismo).
+      - run: bun run import --module=ASV
+      - run: bun run import --module=KJV
+      - run: bun run import --module=SME
+      - run: bun run import --module=SMITH
+      - run: bun run catalog
+      - name: Verificar catálogo contra módulos
+        run: |
+          for m in ASV KJV SME SMITH; do
+            sha=$(sha256sum dist/$m.amod | cut -d' ' -f1)
+            cat catalog/catalog.json | grep -q "$sha" || (echo "sha256 de $m no está en catalog.json" && exit 1)
+          done
+          echo "catálogo verificado ✓"
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/ASV.amod
+            dist/KJV.amod
+            dist/SME.amod
+            dist/SMITH.amod
+            catalog/catalog.json
+          generate_release_notes: true
