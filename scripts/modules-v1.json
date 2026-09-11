@@ -139,7 +139,7 @@
     "shortName": "SME",
     "language": "en",
     "direction": "ltr",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "publisher": "CrossWire Bible Society",
     "license": "PublicDomain",
     "copyright": "Morning and Evening (1869), Public Domain",
@@ -228,5 +228,235 @@
       "hasHeadings": false
     },
     "checks": {}
+  },
+  {
+    "id": "HITCHCOCK",
+    "type": "dictionary",
+    "swordModule": "Hitchcock",
+    "name": "Hitchcock's Bible Names Dictionary",
+    "shortName": "Hitchcock",
+    "language": "en",
+    "direction": "ltr",
+    "version": "1.0.0",
+    "publisher": "CrossWire Bible Society",
+    "license": "PublicDomain",
+    "copyright": "Hitchcock's Bible Names Dictionary (1869), Public Domain",
+    "source": "https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=Hitchcock",
+    "attribution": "Hitchcock's Bible Names Dictionary, Public Domain",
+    "features": {
+      "hasStrongs": false,
+      "hasMorphology": false,
+      "hasFootnotes": false,
+      "hasHeadings": false
+    },
+    "checks": {
+      "keys": [
+        "AARON",
+        "ABADDON",
+        "JESUS",
+        "ZUZIMS"
+      ]
+    }
+  },
+  {
+    "id": "EASTON",
+    "type": "dictionary",
+    "swordModule": "Easton",
+    "name": "Easton's Bible Dictionary",
+    "shortName": "Easton",
+    "language": "en",
+    "direction": "ltr",
+    "version": "1.0.0",
+    "publisher": "CrossWire Bible Society",
+    "license": "PublicDomain",
+    "copyright": "Easton's Bible Dictionary (1897), Public Domain",
+    "source": "https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=Easton",
+    "attribution": "Easton's Bible Dictionary (1897), Public Domain",
+    "features": {
+      "hasStrongs": false,
+      "hasMorphology": false,
+      "hasFootnotes": false,
+      "hasHeadings": false
+    },
+    "checks": {
+      "keys": [
+        "A",
+        "AARON",
+        "ABADDON",
+        "JESUS"
+      ]
+    }
+  },
+  {
+    "id": "NAVE",
+    "type": "dictionary",
+    "swordModule": "Nave",
+    "name": "Nave's Topical Bible",
+    "shortName": "Nave",
+    "language": "en",
+    "direction": "ltr",
+    "version": "1.0.0",
+    "publisher": "CrossWire Bible Society",
+    "license": "PublicDomain",
+    "copyright": "Nave's Topical Bible (1896), Public Domain",
+    "source": "https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=Nave",
+    "attribution": "Nave's Topical Bible (1896), Public Domain",
+    "features": {
+      "hasStrongs": false,
+      "hasMorphology": false,
+      "hasFootnotes": false,
+      "hasHeadings": false
+    },
+    "checks": {
+      "keys": [
+        "AARON",
+        "ABADDON",
+        "ZUZIMS"
+      ]
+    }
+  },
+  {
+    "id": "STRONGSGREEK",
+    "type": "lexicon",
+    "swordModule": "StrongsGreek",
+    "normalizeKeys": "G",
+    "name": "Strong's Greek Bible Dictionary",
+    "shortName": "StrongsGreek",
+    "language": "en",
+    "direction": "ltr",
+    "version": "1.0.0",
+    "publisher": "CrossWire Bible Society",
+    "license": "PublicDomain",
+    "copyright": "Strong's Greek Dictionary (1890), Public Domain",
+    "source": "https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=StrongsGreek",
+    "attribution": "Strong's Greek Bible Dictionary (1890), Public Domain",
+    "features": {
+      "hasStrongs": true,
+      "hasMorphology": false,
+      "hasFootnotes": false,
+      "hasHeadings": false
+    },
+    "checks": {
+      "keys": [
+        "G1",
+        "G3056",
+        "G5463"
+      ]
+    }
+  },
+  {
+    "id": "STRONGSHEBREW",
+    "type": "lexicon",
+    "swordModule": "StrongsHebrew",
+    "normalizeKeys": "H",
+    "name": "Strong's Hebrew Bible Dictionary",
+    "shortName": "StrongsHebrew",
+    "language": "en",
+    "direction": "ltr",
+    "version": "1.0.0",
+    "publisher": "CrossWire Bible Society",
+    "license": "PublicDomain",
+    "copyright": "Strong's Hebrew Dictionary (1890), Public Domain",
+    "source": "https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=StrongsHebrew",
+    "attribution": "Strong's Hebrew Bible Dictionary (1890), Public Domain",
+    "features": {
+      "hasStrongs": true,
+      "hasMorphology": false,
+      "hasFootnotes": false,
+      "hasHeadings": false
+    },
+    "checks": {
+      "keys": [
+        "H1",
+        "H3056",
+        "H8674"
+      ]
+    }
+  },
+  {
+    "id": "ABBOTTSMITH",
+    "type": "lexicon",
+    "swordModule": "AbbottSmith",
+    "name": "Abbott-Smith's Manual Greek Lexicon of the New Testament",
+    "shortName": "AbbottSmith",
+    "language": "en",
+    "direction": "ltr",
+    "version": "1.0.0",
+    "publisher": "CrossWire Bible Society",
+    "license": "PublicDomain",
+    "copyright": "Abbott-Smith Manual Greek Lexicon (1922), Public Domain",
+    "source": "https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=AbbottSmith",
+    "attribution": "Abbott-Smith's Manual Greek Lexicon of the New Testament (1922), Public Domain",
+    "features": {
+      "hasStrongs": false,
+      "hasMorphology": false,
+      "hasFootnotes": false,
+      "hasHeadings": false
+    },
+    "checks": {
+      "keys": [
+        "Α",
+        "ΛΌΓΟΣ",
+        "ΘΕΌΣ",
+        "ΧΡΙΣΤΌΣ"
+      ]
+    }
+  },
+  {
+    "id": "ISBE",
+    "type": "dictionary",
+    "swordModule": "ISBE",
+    "name": "International Standard Bible Encyclopedia",
+    "shortName": "ISBE",
+    "language": "en",
+    "direction": "ltr",
+    "version": "1.0.0",
+    "publisher": "CrossWire Bible Society",
+    "license": "PublicDomain",
+    "copyright": "International Standard Bible Encyclopedia (1915), Public Domain",
+    "source": "https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=ISBE",
+    "attribution": "International Standard Bible Encyclopedia (1915), Public Domain",
+    "features": {
+      "hasStrongs": false,
+      "hasMorphology": false,
+      "hasFootnotes": false,
+      "hasHeadings": false
+    },
+    "checks": {
+      "keys": [
+        "A",
+        "AARON",
+        "ABADDON",
+        "JESUS"
+      ]
+    }
+  },
+  {
+    "id": "TSK",
+    "type": "commentary",
+    "swordModule": "TSK",
+    "slotShift": { "nt": 1 },
+    "name": "Treasury of Scripture Knowledge",
+    "shortName": "TSK",
+    "language": "en",
+    "direction": "ltr",
+    "version": "1.0.0",
+    "publisher": "CrossWire Bible Society",
+    "license": "PublicDomain",
+    "copyright": "Treasury of Scripture Knowledge (c. 1880), Public Domain",
+    "source": "https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=TSK",
+    "attribution": "Treasury of Scripture Knowledge, Public Domain",
+    "features": {
+      "hasStrongs": false,
+      "hasMorphology": false,
+      "hasFootnotes": false,
+      "hasHeadings": false
+    },
+    "checks": {
+      "GEN 1:1": "Joh 1:1",
+      "MAT 1:1": "genealogy",
+      "JHN 1:1": "Ge 1:1",
+      "REV 22:20": "Amen"
+    }
   }
 ]

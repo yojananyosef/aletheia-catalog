@@ -1,5 +1,5 @@
 import { unzipSync } from "fflate";
-import { loadSwordModule, extractBibleVerses, extractCommentaryEntries } from "./lib/sword-module";
+import { loadSwordModule, extractBibleVerses, extractCommentaryEntries, normalizeStrongKey } from "./lib/sword-module";
 import { buildAmod } from "./lib/amf";
 import { osisToText, tidyPunctuation } from "./lib/osis-text";
 import { CANON } from "./lib/canon";
@@ -128,11 +128,11 @@ for (const id of wanted) {
     const keys = def.checks?.keys ?? [];
     const sample = mod.entries.slice(0, 3).map((e) => e.key);
     console.log(`entradas: ${mod.entries.length}, sample keys: ${JSON.stringify(sample)}`);
-    const missing = keys.filter(
-      (k: string) => !mod.entries.some((e: any) => e.key.toLowerCase() === k.toLowerCase()),
-    );
-    if (missing.length) throw new Error(`Claves esperadas ausentes: ${missing.join(", ")}`);
     if (def.type === "devotion") {
+      const missing = keys.filter(
+        (k: string) => !mod.entries.some((e: any) => e.key.toLowerCase() === k.toLowerCase()),
+      );
+      if (missing.length) throw new Error(`Claves esperadas ausentes: ${missing.join(", ")}`);
       const devotions = mod.entries.map((e) => {
         const m = /^(\d{1,2})[.\-\/](\d{1,2})$/.exec(e.key);
         if (!m) throw new Error(`Clave de devocional no parseable: ${JSON.stringify(e.key)}`);
@@ -148,24 +148,43 @@ for (const id of wanted) {
       content = { devotions };
       console.log(`devocionales: ${devotions.length}`);
     } else {
+      // Diccionarios/lexicons: dedup case-insensitive, sin @LINK ni vacíos.
+      // Con `normalizeKeys: "G"|"H"` (StrongsGreek/StrongsHebrew) la clave se
+      // normaliza a estilo normStrong ("00001"→"G1", "00001\"→"H1", "00031A"→"G31a")
+      // y puebla la columna strongs; la cabecera "00000" y la intro no-Strong
+      // se descartan (documentado en tasks.md, Lote v1.1).
+      const normPrefix = def.normalizeKeys === "G" || def.normalizeKeys === "H" ? def.normalizeKeys : null;
       const seen = new Set<string>();
-      const entries: { key: string; sortKey: string; strongs: null; content: string }[] = [];
+      const entries: { key: string; sortKey: string; strongs: string | null; content: string }[] = [];
       for (const e of mod.entries) {
-        if (!e.key || seen.has(e.key.toLowerCase())) continue;
-        seen.add(e.key.toLowerCase());
+        let key = e.key;
+        let strongs: string | null = null;
+        if (normPrefix) {
+          const n = normalizeStrongKey(e.key, normPrefix);
+          if (!n) continue;
+          key = n;
+          strongs = n;
+        }
+        if (!key || seen.has(key.toLowerCase())) continue;
+        seen.add(key.toLowerCase());
         if (e.content.startsWith("@LINK")) continue;
         const clean = osisToText(e.content).text;
         if (!clean) continue;
         entries.push({
-          key: e.key,
-          sortKey: e.key
+          key,
+          sortKey: key
             .normalize("NFD")
             .replace(/[\u0300-\u036f]/g, "")
             .toLowerCase(),
-          strongs: null,
+          strongs,
           content: clean,
         });
       }
+      const missing = keys.filter(
+        (k: string) => !entries.some((e) => e.key.toLowerCase() === k.toLowerCase()),
+      );
+      if (missing.length) throw new Error(`Claves esperadas ausentes: ${missing.join(", ")}`);
+      console.log(`entradas finales: ${entries.length}, con strongs: ${entries.filter((e) => e.strongs).length}`);
       content = { entries };
     }
     manifest = baseManifest(def);

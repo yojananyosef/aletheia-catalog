@@ -58,6 +58,76 @@ function keys0(prefix: string): string[] {
   return [prefix, base, base.toLowerCase()];
 }
 
+/**
+ * Parsea un bloque zLD/zLD4 inflado.
+ *
+ * Formato binario (verificado contra SME real de CrossWire):
+ *   u32LE count + count×(u32LE offset, u32LE size) + datos.
+ * Los offsets son relativos al inicio del bloque (incluida la cabecera).
+ * Cada entrada se decodifica con `encoding` (utf8 si el conf dice UTF-8,
+ * si no latin1) y se limpia de `\0`/`\r`/espacios como hace loadSwordModule.
+ */
+export function parseZldBlock(inflated: Buffer, encoding: string): string[] {
+  const textEnc: BufferEncoding = /utf-?8/i.test(encoding) ? "utf8" : "latin1";
+  if (inflated.length < 4) return [];
+  const count = inflated.readUInt32LE(0);
+  const dirLen = 4 + count * 8;
+  if (dirLen > inflated.length) return [];
+  const out: string[] = new Array(count);
+  for (let e = 0; e < count; e++) {
+    const off = inflated.readUInt32LE(4 + e * 8);
+    const size = inflated.readUInt32LE(4 + e * 8 + 4);
+    const slice = inflated.subarray(off, off + size);
+    out[e] = slice.toString(textEnc).replace(/\0/g, "").replace(/\r/g, "").trim();
+  }
+  return out;
+}
+
+/**
+ * Resuelve el stride del índice vss para drivers zText/zCom.
+ *
+ * Regla: solo zCom4 usa 12B por entrada (size u32: comentarios largos);
+ * zCom clásico usa 10B (size u16) como zText/zText4.
+ * (Antes zCom también usaba 12B: incorrecto — TSK es 10B:
+ * ot.bzv = 241150 = 24115×10, nt.bzv = 82460 = 8246×10.
+ * JFB sigue en 12B: ot.vss/12 = 24115, nt.vss/12 = 8246.)
+ *
+ * Fallback: si los conteos no cuadran con el canon KJV66 con el stride
+ * primario, se prueba el otro stride cuando las longitudes son divisibles
+ * y los conteos sí cuadran. Si ninguno cuadra se devuelve el primario para
+ * que el lector/validador emita el error canónico.
+ */
+export function resolveVssEntrySize(modDrv: string, otLen: number, ntLen: number | null): 10 | 12 {
+  const primary: 10 | 12 = modDrv === "zCom4" ? 12 : 10;
+  const alternate: 10 | 12 = primary === 12 ? 10 : 12;
+  const fits = (size: 10 | 12): boolean => {
+    if (otLen % size !== 0 || (ntLen != null && ntLen % size !== 0)) return false;
+    if (otLen / size !== NT_START_OFFSET + 1) return false;
+    if (ntLen != null && ntLen / size !== SLOT_COUNT - NT_START_OFFSET) return false;
+    return true;
+  };
+  if (fits(primary)) return primary;
+  if (fits(alternate)) return alternate;
+  return primary;
+}
+
+/**
+ * Normaliza claves Strong a estilo `normStrong` de osis-text.ts (G3056, H7225).
+ * - Griego (prefijo "G"): "00001" → "G1", "03056" → "G3056", "00031A" → "G31a".
+ * - Hebreo (prefijo "H"): "00001\\" → "H1" (RawLD trae backslash final).
+ * Devuelve null para la cabecera "00000" y para claves no-Strong
+ * (intro "Dictionaries of Hebrew and Greek Words…"): el importador las
+ * descarta (documentado en tasks.md, Lote v1.1).
+ */
+export function normalizeStrongKey(key: string, prefix: "G" | "H"): string | null {
+  const t = key.trim();
+  const m = prefix === "H" ? /^0*(\d+)([A-Za-z])?\\$/.exec(t) : /^0*(\d+)([A-Za-z])?$/.exec(t);
+  if (!m) return null;
+  const num = parseInt(m[1], 10);
+  if (!Number.isFinite(num) || num <= 0) return null;
+  return `${prefix}${num}${(m[2] ?? "").toLowerCase()}`;
+}
+
 export function loadSwordModule(zipBytes: Uint8Array, opts: SwordLoadOptions = {}): SwordModule {
   const files = unzipSync(zipBytes);
   const confName = Object.keys(files).find((k) => /^mods\.d\/[^/]+\.conf$/i.test(k));
@@ -67,9 +137,6 @@ export function loadSwordModule(zipBytes: Uint8Array, opts: SwordLoadOptions = {
   const modDrv = conf.modDrv;
 
   if (modDrv === "zText4" || modDrv === "zCom4" || modDrv === "zText" || modDrv === "zCom") {
-    // zCom/zCom4 usan índice de 12B por entrada (size u32); zText/zText4 de 10B (size u16).
-    // Verificado: JFB (zCom4) ot.vss/12 = 24115 y nt.vss/12 = 8246 exactos (canon KJV66).
-    const entrySize: 10 | 12 = modDrv === "zCom4" || modDrv === "zCom" ? 12 : 10;
     const prefix = dataPath;
     const vssNames = ["bzv", "vss"];
     const zdxNames = ["bzs", "zdx"];
@@ -83,6 +150,8 @@ export function loadSwordModule(zipBytes: Uint8Array, opts: SwordLoadOptions = {
     const ot = read("ot");
     const ntFiles = pick(files, [...vssNames.map((n) => prefix + "nt." + n)]);
     const nt = ntFiles ? read("nt") : null;
+    // zCom clásico (TSK) = 10B; zCom4 (JFB) = 12B, con fallback vs canon.
+    const entrySize = resolveVssEntrySize(modDrv, ot.vss.length, nt ? nt.vss.length : null);
     const otReader = new ZTextReader(ot.vss, ot.zdx, ot.bzz, conf.encoding, entrySize);
     const ntReader = nt ? new ZTextReader(nt.vss, nt.zdx, nt.bzz, conf.encoding, entrySize) : null;
     const otShift = opts.otShift ?? 0;
@@ -177,11 +246,11 @@ export function loadSwordModule(zipBytes: Uint8Array, opts: SwordLoadOptions = {
         if (zdxOff + 8 > zdxBuf.length) continue;
         const zStart = zdxBuf.readUInt32LE(zdxOff);
         const zSize = zdxBuf.readUInt32LE(zdxOff + 4);
-        const inflated = inflateSync(zdtBuf.subarray(zStart, zStart + zSize));
-        blockCache = { idx: block, entries: inflated.toString(textEnc).split("\n") };
+        const inflated = Buffer.from(inflateSync(zdtBuf.subarray(zStart, zStart + zSize)));
+        blockCache = { idx: block, entries: parseZldBlock(inflated, conf.encoding) };
       }
       const content = blockCache.entries[entryIdx] ?? "";
-      if (key) entries.push({ key, content: content.replace(/\0/g, "").replace(/\r/g, "").trim() });
+      if (key) entries.push({ key, content });
     }
     return { kind: "dict", conf, entries };
   }

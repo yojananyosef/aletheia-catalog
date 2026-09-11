@@ -30,8 +30,20 @@
 - [x] Construir ASV desde CrossWire: Gen 1:1 / Sal 119:105 / Ap 22:21 correctos; 30.826 vss; doble build sha256 idéntico
 - [x] Construir KJV: 30.842 vss, 394 headings, 6.959 notas; checks ✓; determinista
 - [x] Construir SME (zLD): 366 devocionales; determinista
+      + FIX 2026-09-11: la rama zLD parseaba el bloque inflado como texto
+        (`inflated.toString(enc).split("\n")` indexado por entryIdx) → 364
+        entradas basura de 3-4 caracteres + 2 mega-entradas de 600-700KB.
+        El formato real es binario: u32LE `count` + `count`×(u32LE offset,
+        u32LE size) + datos, offsets relativos al inicio del bloque
+        (bloque 0: count=200, entrada 0 → offset 1604 = 4+200*8, size 4370;
+        bloque 1: count=166). Nuevo `parseZldBlock()` en
+        `scripts/lib/sword-module.ts` + test sin red `tests/zld.test.ts`.
+        Re-importado: 366 devocionales, 01.01 contiene "They did eat of the
+        fruit", 0 entradas con caracteres de control, longitudes 3520–5948B.
+        Subido a **1.0.1** en `scripts/modules-v1.json` (v1.0.0 era basura).
 - [x] Construir Smith (RawLD): 4.639 entradas deduplicadas; determinista
 - [x] No-regresión 2026-09-11: los 4 reconstruyen **byte-idénticos** a v1.0.0 tras todos los cambios v1.1 (shas verificados contra catalog.json)
+- [x] No-regresión fix zLD 2026-09-11: ASV/JFB/KJV/SMITH/WEB reconstruidos **byte-idénticos** (shas = catalog.json); solo SME cambia (→ 1.0.1, sha `cfbe6b9e…`)
 - [x] JFB (zCom4 12B): 24.586 entradas; checks ✓; determinista — verificado local, pendiente release v1.1.0
 - [x] WEB (engweb2025peb, KJV66): 31.095 vss, 165 headings, 1.568 notas; 5 checks ✓; determinista — verificado local, pendiente release v1.1.0
 - [ ] Vincent: sin fuente SWORD (ModInfo: No module found) — ETL manual CCEL con Creeds
@@ -73,14 +85,46 @@ Coordina con `aletheia-platform` (specs study/workspace): sin este lote, guías/
 idiomas originales quedan bloqueados. Fuentes CrossWire (drivers ya implementados en ETL
 o conocidos):
 
-- [ ] TSK (Treasury of Scripture Knowledge, comentario — resolver versificación extendida)
-- [ ] Nave (Topical Bible, backbone de entidades del Factbook — rawld4)
-- [ ] Easton, ISBE, Hitchcock (diccionarios — rawld4)
-- [ ] StrongsGreek, StrongsHebrew (lexicons con strongs — rawld4)
-- [ ] Abbott-Smith (lexicon con strongs — rawld4)
-- [ ] Robinson (morfología griega — rawld4 con claves strongs)
-- [ ] WLC, SBLGNT, WHNU (biblias originales — zText4/zCom, verificar versificación y
-      strongs por palabra; puede requerir extensión AMF `words` o columnas strongs)
+### Lote PD v1.1 (importado 2026-09-11, verificado local, pendiente release v1.1.0)
+
+Todo `schemaVersion 1` (punto de coordinación), `verify` verde, doble build
+determinista, 6 .amod previos byte-idénticos (shas = catalog.json).
+
+- [x] HITCHCOCK (dictionary, zLD TEI): 2616 → **2612** entradas (4 dups); checks AARON/ABADDON/JESUS/ZUZIMS; 184KB, sha `bb4283b4…`
+- [x] EASTON (dictionary, zLD TEI): 3963 → **3961** (2 dups); checks A/AARON/ABADDON/JESUS; 2.24MB, sha `db3d446a…`
+- [x] NAVE (dictionary, zLD TEI, backbone Factbook F11): 5322 → **5320** (2 dups); checks AARON/ABADDON/ZUZIMS; 1.41MB, sha `02f3145f…`
+- [x] STRONGSGREEK (lexicon, zLD TEI, `normalizeKeys: "G"` → `G<num>` estilo
+      `normStrong`, strongs poblado 5741/5741; cabecera "00000" descartada;
+      252 `@@@@` conservados como en fuente): 5742 → **5741**; checks
+      G1/G3056/G5463; 980KB, sha `066d72b6…`
+- [x] STRONGSHEBREW (lexicon, RawLD, `"NNNNN\"→"H<num>"`, strongs 8674/8674;
+      intro descartada): 8675 → **8674**; checks H1/H3056/H8674; 1.19MB, sha `4813a4cb…`
+- [x] ABBOTTSMITH (lexicon, zLD TEI, lemas griegos, strongs null; 10 dups +
+      20 colisiones sortKey aceptables): 5896 → **5886**; checks
+      Α/ΛΌΓΟΣ/ΘΕΌΣ/ΧΡΙΣΤΌΣ; 1.67MB, sha `ed4e228b…`
+- [x] ISBE (dictionary, zLD TEI 10MB, refs internos aplanados): 9380 → **9349**
+      (31 vacías omitidas); checks A/AARON/ABADDON/JESUS; 16.97MB, sha `488ad53d…`
+- [x] TSK (commentary, zCom clásico **10B**: `resolveVssEntrySize()` zCom→10 /
+      zCom4→12 + fallback vs canon, test `tests/zcom.test.ts`; JFB intacto en
+      12B; `slotShift.nt=1` como WEB; REV 22:21 vacío en fuente): **31089**
+      entradas; checks GEN 1:1→"Joh 1:1", MAT 1:1→"genealogy",
+      JHN 1:1→"Ge 1:1", REV 22:20→"Amen"; 5.31MB, sha `023ad626…`
+- [x] `osisToText` SIN cambios (aplana TEI/ThML limpio: verificado
+      entryFree/def/orth/scripRef/osisRef/target + tests en
+      `tests/osis-text.test.ts`; artefactos menores " ;"/" ," como en fuente,
+      sin tidy para no tocar shas v1)
+- [x] Tests nuevos sin red: `tests/zcom.test.ts` (stride 10/12 + fallback),
+      `tests/strongs.test.ts` ("00001"→G1, "00001\"→H1, "00000"→null),
+      casos TEI/ThML en `tests/osis-text.test.ts` (53 pass)
+- [x] `catalog/catalog.json` regenerado (14 módulos) + `PROVENANCE.md` con
+      entrada por módulo (fuente, licencia PD, conteos, sha)
+
+### Excluidos del lote (bloqueo licencia/política, sin tocar)
+
+- [x] TSK, Nave, Easton, ISBE, Hitchcock, StrongsGreek, StrongsHebrew, Abbott-Smith: hechos arriba (eran zLD/RawLD/zCom, no rawld4)
+- [ ] Robinson (morfología griega — rawld4 con claves strongs): EXCLUIDO lote (CC BY-SA 4.0, pendiente usuario)
+- [ ] SBLGNT ("Free non-commercial"), WHNU (CC BY-NC-SA): EXCLUIDOS lote (pendiente usuario)
+- [ ] WLC: EXCLUIDO lote (requiere mapa de versificación Leningrad + sin `<w>`, pendiente usuario)
 - [ ] Módulo armonía de pasajes paralelos (fuente PD a definir)
 - [ ] Decisión de formato: cómo almacenar strongs por palabra (columna strongs por versículo
       vs tabla words) — spec AMF v1.1 antes de construir

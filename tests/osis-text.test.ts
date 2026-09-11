@@ -36,4 +36,30 @@ describe("osisToText", () => {
     // osisToText NO aplica tidy (shas v1.0.0 intactos)
     expect(osisToText("hola , mundo").text).toBe("hola , mundo");
   });
+
+  test("aplana TEI de diccionarios (entryFree/def/orth) sin dejar marcado", () => {
+    const hitch = osisToText(`<entryFree n="Aaron">\n<def>a teacher; lofty; mountain of strength</def>\n\n</entryFree>`);
+    expect(hitch.text).toBe("a teacher; lofty; mountain of strength");
+    const sg = osisToText(
+      `<entryFree n="3056">\n<orth>λόγος</orth><lb/>\n<orth type="writing">lovgos</orth> <pron rend="italic">{log'-os}</pron>\n<def>\n\n from 3004; something said\n</def>\n\n</entryFree>`,
+    );
+    expect(sg.text).toContain("λόγος");
+    expect(sg.text).toContain("something said");
+    expect(sg.text).not.toContain("<");
+    expect(sg.text).not.toContain("entryFree");
+  });
+
+  test("aplana ThML de TSK (scripRef) y refs TEI (osisRef/target) a su texto", () => {
+    const tsk = osisToText(
+      `<br /><scripRef passage="Ge 1:1">1</scripRef> God creates heaven and earth;<br /><scripRef>Job 26:7; Isa 45:18</scripRef>`,
+    );
+    expect(tsk.text).toContain("God creates heaven and earth");
+    expect(tsk.text).toContain("Job 26:7");
+    expect(tsk.text).not.toContain("scripRef");
+    const nave = osisToText(`Lineage of <ref osisRef="Exod.6.16-Exod.6.20">Ex 6:16-20</ref>; <ref osisRef="Josh.21.4">Jos 21:4</ref>`);
+    expect(nave.text).toContain("Ex 6:16-20");
+    const isbe = osisToText(`<p>See <ref target="ISBE:ALEPH">ALEPH</ref>; <ref target="ISBE:ALPHABET">ALPHABET</ref>.</p>`);
+    expect(isbe.text).toContain("ALEPH");
+    expect(isbe.text).not.toContain("ISBE:");
+  });
 });
