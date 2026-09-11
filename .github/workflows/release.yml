@@ -18,16 +18,18 @@ jobs:
       - run: bun install --frozen-lockfile
       - run: bun run typecheck
       - run: bun test
-      # Construye los 4 módulos v1 verificados (requiere red → CrossWire).
+      # Construye los 6 módulos verificados (requiere red → CrossWire/ebible).
       # El propio import-sword.ts hace doble build y compara sha256 (determinismo).
       - run: bun run import --module=ASV
       - run: bun run import --module=KJV
       - run: bun run import --module=SME
       - run: bun run import --module=SMITH
+      - run: bun run import --module=JFB
+      - run: bun run import --module=WEB
       - run: bun run catalog
       - name: Verificar catálogo contra módulos
         run: |
-          for m in ASV KJV SME SMITH; do
+          for m in ASV KJV SME SMITH JFB WEB; do
             sha=$(sha256sum dist/$m.amod | cut -d' ' -f1)
             cat catalog/catalog.json | grep -q "$sha" || (echo "sha256 de $m no está en catalog.json" && exit 1)
           done
@@ -39,5 +41,17 @@ jobs:
             dist/KJV.amod
             dist/SME.amod
             dist/SMITH.amod
+            dist/JFB.amod
+            dist/WEB.amod
             catalog/catalog.json
           generate_release_notes: true
+      # El catálogo regenerado (con los shas del release) vuelve a main para que
+      # la app siempre lea un catalog.json coherente con releases/latest/download.
+      - name: Publicar catalog.json actualizado en main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add catalog/catalog.json
+          git diff --cached --quiet && echo "sin cambios" && exit 0
+          git commit -m "catalog: actualizar a ${{ github.ref_name }} [skip ci]"
+          git push origin HEAD:main
