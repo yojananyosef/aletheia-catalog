@@ -31,8 +31,25 @@
 - [x] Construir KJV: 30.842 vss, 394 headings, 6.959 notas; checks ✓; determinista
 - [x] Construir SME (zLD): 366 devocionales; determinista
 - [x] Construir Smith (RawLD): 4.639 entradas deduplicadas; determinista
-- [ ] WEB, JFB, Vincent: requieren soporte multi-versificación (canon extendido del fuente) — v1.1
-- [ ] APF (genbook), Creeds (ETL CCEL): v1.1
+- [x] No-regresión 2026-09-11: los 4 reconstruyen **byte-idénticos** a v1.0.0 tras todos los cambios v1.1 (shas verificados contra catalog.json)
+- [x] JFB (zCom4 12B): 24.586 entradas; checks ✓; determinista — verificado local, pendiente release v1.1.0
+- [x] WEB (engweb2025peb, KJV66): 31.095 vss, 165 headings, 1.568 notas; 5 checks ✓; determinista — verificado local, pendiente release v1.1.0
+- [ ] Vincent: sin fuente SWORD (ModInfo: No module found) — ETL manual CCEL con Creeds
+- [ ] APF (genbook), Creeds (ETL CCEL): v1.1 tardía
+
+## AMF v1.1 — formato words (Fase 1, implementado, sin publicar módulos v2)
+
+- [x] Decisión: **tabla `words`** (no columna): `(bookId, chapter, verse, position, surface, strongs, lemma, morph)` + índices parciales strongs/lemma — spec §3.7
+- [x] `osisToWords()`: parse `<w lemma morph>` estilo WLC/SBLGNT/WHNU, normaliza `strong:H07225` → `H7225`; `text` idéntico a `osisToText` (byte-compat v1); validado con Gén 1 real de WEB (667/667 con strongs)
+- [x] Builder: `schemaVersion 1|2`, `minReaderVersion === schemaVersion`, tabla creada solo si schema ≥ 2 (v1 byte-idéntico probado), validación de filas, inserts ordenados
+- [x] Tests: `words.test.ts` + `osis-words.test.ts` (30→33 pass)
+- [ ] Publicar primer módulo schemaVersion 2 (Oleada 3) SOLO tras `READER_SCHEMA_VERSION 1→2` en aletheia-platform (su installer rechaza `user_version` 2 hoy)
+
+## Oleada 1 — hallazgos de versificación (2026-09-11)
+
+- JFB no era "versificación extendida": zCom usa índice de 12B (size u32). `ZTextReader(entrySize)` + `ModDrv → 12|10`. Resuelto.
+- WEB: el zip CrossWire/ebible `engweb2025eb` es NRSVA con apócrifos (NT descuadrado: Rev 22:21 leía 22:18). Fuente correcta: `engweb2025peb` (protestante, KJV, conteos exactos) + `slotShift.nt=1` (quirk del exportador, verificado en plano) + `textTidy` opt-in (osisToText intacto para v1).
+- `mergeSections`: varios `<title>` por versículo se unen con " — " (PK intacta, sin cambio de DDL).
 
 ## Distribución
 

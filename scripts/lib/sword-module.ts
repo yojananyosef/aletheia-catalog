@@ -15,6 +15,17 @@ export interface SwordBible {
   slotCount: number;
 }
 
+export interface SwordLoadOptions {
+  /**
+   * Desplazamiento de slots de fichero por testamento (defecto 0).
+   * Caso real: engweb2025peb (ebible) trae el NT desplazado +1
+   * (file(n) = canon(n-1), verificado versículo a versículo:
+   * "with you always" en 1101=1100+1, gracia/santos en el último slot).
+   */
+  otShift?: number;
+  ntShift?: number;
+}
+
 export interface SwordDict {
   kind: "dict";
   conf: SwordConf;
@@ -47,7 +58,7 @@ function keys0(prefix: string): string[] {
   return [prefix, base, base.toLowerCase()];
 }
 
-export function loadSwordModule(zipBytes: Uint8Array): SwordModule {
+export function loadSwordModule(zipBytes: Uint8Array, opts: SwordLoadOptions = {}): SwordModule {
   const files = unzipSync(zipBytes);
   const confName = Object.keys(files).find((k) => /^mods\.d\/[^/]+\.conf$/i.test(k));
   if (!confName) throw new Error("No se encontró mods.d/*.conf en el zip SWORD");
@@ -56,6 +67,9 @@ export function loadSwordModule(zipBytes: Uint8Array): SwordModule {
   const modDrv = conf.modDrv;
 
   if (modDrv === "zText4" || modDrv === "zCom4" || modDrv === "zText" || modDrv === "zCom") {
+    // zCom/zCom4 usan índice de 12B por entrada (size u32); zText/zText4 de 10B (size u16).
+    // Verificado: JFB (zCom4) ot.vss/12 = 24115 y nt.vss/12 = 8246 exactos (canon KJV66).
+    const entrySize: 10 | 12 = modDrv === "zCom4" || modDrv === "zCom" ? 12 : 10;
     const prefix = dataPath;
     const vssNames = ["bzv", "vss"];
     const zdxNames = ["bzs", "zdx"];
@@ -69,13 +83,15 @@ export function loadSwordModule(zipBytes: Uint8Array): SwordModule {
     const ot = read("ot");
     const ntFiles = pick(files, [...vssNames.map((n) => prefix + "nt." + n)]);
     const nt = ntFiles ? read("nt") : null;
-    const otReader = new ZTextReader(ot.vss, ot.zdx, ot.bzz, conf.encoding);
-    const ntReader = nt ? new ZTextReader(nt.vss, nt.zdx, nt.bzz, conf.encoding) : null;
+    const otReader = new ZTextReader(ot.vss, ot.zdx, ot.bzz, conf.encoding, entrySize);
+    const ntReader = nt ? new ZTextReader(nt.vss, nt.zdx, nt.bzz, conf.encoding, entrySize) : null;
+    const otShift = opts.otShift ?? 0;
+    const ntShift = opts.ntShift ?? 0;
     const verseAt = (gb: number, chapter: number, verse: number): string => {
       const slot = slotFor(gb, chapter, verse);
-      if (slot <= NT_START_OFFSET) return otReader.textAt(otReader.entryAt(slot));
+      if (slot <= NT_START_OFFSET) return otReader.textAt(otReader.entryAt(slot + otShift));
       if (!ntReader) return "";
-      return ntReader.textAt(ntReader.entryAt(slot - NT_START_OFFSET - 1));
+      return ntReader.textAt(ntReader.entryAt(slot - NT_START_OFFSET - 1 + ntShift));
     };
     const otCount = otReader.entryCount;
     const ntCount = ntReader?.entryCount ?? 0;
@@ -193,7 +209,31 @@ export function extractBibleVerses(mod: SwordBible): {
       }
     }
   });
-  return { verses, sections, footnotes };
+  return { verses, sections: mergeSections(sections), footnotes };
+}
+
+/**
+ * Algunos módulos (WEB) emiten varios <title> antes del mismo versículo
+ * (sección mayor + sección). La PK de sections es (bookId, chapter, beforeVerse):
+ * se unen con " — " (jerarquía mayor → menor, orden de aparición).
+ * Sin duplicados en la fuente el resultado es idéntico al anterior.
+ */
+function mergeSections(
+  sections: { bookId: number; chapter: number; beforeVerse: number; title: string }[],
+): { bookId: number; chapter: number; beforeVerse: number; title: string }[] {
+  const merged = new Map<string, { bookId: number; chapter: number; beforeVerse: number; title: string }>();
+  for (const s of sections) {
+    const key = `${s.bookId}:${s.chapter}:${s.beforeVerse}`;
+    const prev = merged.get(key);
+    if (!prev) {
+      merged.set(key, { ...s });
+      continue;
+    }
+    const parts = prev.title.split(" — ");
+    if (!parts.includes(s.title)) parts.push(s.title);
+    prev.title = parts.join(" — ");
+  }
+  return [...merged.values()];
 }
 
 export function extractCommentaryEntries(mod: SwordBible): {

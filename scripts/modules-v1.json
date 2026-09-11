@@ -55,8 +55,9 @@
     "id": "WEB",
     "type": "bible",
     "swordModule": "WEB",
-    "sourceUrl": "https://ebible.org/sword/zip/engweb2025eb.zip",
-    "deferred": "módulo fuente usa versificación extendida (39275 slots, con apócrifos); requiere soporte multi-versificación — v1.1 o ETL USFM desde ebible.org",
+    "sourceUrl": "https://ebible.org/sword/zip/engweb2025peb.zip",
+    "slotShift": { "nt": 1 },
+    "textTidy": true,
     "name": "World English Bible",
     "shortName": "WEB",
     "language": "en",
@@ -70,12 +71,14 @@
     "features": {
       "hasStrongs": false,
       "hasMorphology": false,
-      "hasFootnotes": false,
+      "hasFootnotes": true,
       "hasHeadings": true
     },
     "checks": {
       "GEN 1:1": "created the heavens and the earth",
-      "PSA 119:105": "lamp for my feet",
+      "PSA 119:105": "lamp to my feet",
+      "MAT 1:1": "genealogy",
+      "JHN 1:1": "the Word was God",
       "REV 22:21": "saints"
     }
   },
@@ -101,8 +104,7 @@
     },
     "checks": {
       "GEN 1:1": "God"
-    },
-    "deferred": "versificación del módulo fuente excede KJV66 (28938+9895 slots vs 24115+8246): requiere soporte multi-versificación — v1.1"
+    }
   },
   {
     "id": "VINCENT",
@@ -127,7 +129,7 @@
     "checks": {
       "JHN 1:1": "Word"
     },
-    "deferred": "igual que JFB: verificación de slots requerida — v1.1"
+    "deferred": "módulo SWORD inexistente en el repo principal de CrossWire (ModInfo: 'No module found', verificado 2026-09-11); vía ETL manual desde CCEL pendiente (mismo bucket que Creeds)"
   },
   {
     "id": "SME",

@@ -144,6 +144,8 @@ Reglas de contenido:
 - `text` es **texto plano**: sin XML/OSIS/GBF, sin entidades HTML, sin saltos de línea
   internos, espacios colapsados. Los derechos de presentación (itálicas, palabras de Jesús
   en rojo) quedan fuera de v1 por diseño.
+- Columna `strongs` de `verses`: reservada, siempre NULL (los Strong por palabra viven
+  en la tabla `words` de §3.7, solo schemaVersion 2).
 - Búsqueda: `unicode61 remove_diacritics 2` — "Jesús" coincide con "Jesus" y "Jesús"
   es equivalente a "jesus" en español.
 - FTS5 usa external content sobre `verses` (sin duplicar el texto, DB más pequeña).
@@ -192,6 +194,42 @@ CREATE TABLE entries (
 Misma estructura de `entries` con columnas `fromBook/fromChapter/fromVerse` y
 `toOsis` normalizado. No se publica en v1.
 
+### 3.7 Tabla `words` — Strong por palabra (AMF v1.1, schemaVersion 2)
+
+Solo `type = bible`. Tablas `verses`/`sections`/`footnotes` y FTS idénticos a v1;
+`words` es **aditiva**: un módulo schemaVersion 1 nunca la contiene.
+
+```sql
+CREATE TABLE words (
+  bookId   INTEGER NOT NULL,
+  chapter  INTEGER NOT NULL,
+  verse    INTEGER NOT NULL,
+  position INTEGER NOT NULL,   -- 1-based: orden del <w> dentro del versículo
+  surface  TEXT NOT NULL,       -- forma superficial en texto plano
+  strongs  TEXT,                -- "H7225" | "G3056" normalizado (sin ceros); NULL si no aplica
+  lemma    TEXT,                -- lema no-Strong ("λόγος"); NULL si no aplica
+  morph    TEXT,                -- código morfológico tal cual ("V-PAI-3S"); NULL si no aplica
+  PRIMARY KEY (bookId, chapter, verse, position)
+);
+CREATE INDEX idx_words_strongs ON words(strongs, bookId, chapter, verse) WHERE strongs IS NOT NULL;
+CREATE INDEX idx_words_lemma ON words(lemma, bookId, chapter, verse) WHERE lemma IS NOT NULL;
+```
+
+Reglas:
+
+- Fuente: elementos `<w lemma="..." morph="...">superficie</w>` estilo WLC/SBLGNT/WHNU.
+  `lemma="strong:H07225"` → `strongs="H7225"` (prefijo fuera, ceros fuera);
+  `lemma` conserva el primer token no-Strong si lo hay. Estilo
+  `<sync type="Strongs">` (KJV et al.): fuera de v1.1.
+- `position` cuenta solo `<w>` con superficie no vacía, reinicia en 1 por versículo.
+- El ETL inserta en orden `(bookId, chapter, verse, position)` (el builder lo reordena
+  igualmente: el build es determinista ante cualquier orden de entrada).
+- Consultas canónicas: usos de un Strong
+  (`WHERE strongs = 'G3056' ORDER BY bookId, chapter, verse`), morfología
+  (`WHERE morph LIKE 'V-%'`), palabra↔versículo por PK.
+- Sin FTS sobre `words` en v1.1 (búsqueda exacta por índice B-tree basta para
+  `strongs:`/`lema:` del DSL; FTS sigue solo sobre `verses.text`).
+
 ## 4. Versificación
 
 - `books` usa códigos OSIS. El orden canónico va en `bookOrder`.
@@ -210,5 +248,12 @@ Misma estructura de `entries` con columnas `fromBook/fromChapter/fromVerse` y
 ## 6. Evolución
 
 - `schemaVersion` incrementa con cambios de esquema; `amf` solo con cambios de contenedor.
+  - v1 → v1.1: `schemaVersion` 1 → 2, único cambio = tabla `words` (+2 índices) en
+    `type=bible`. `verses`, FTS, zip y manifest son byte-idénticos: los `.amod` v1.0.0
+    publicados siguen válidos sin reconstruir.
+  - `minReaderVersion` DEBE igualar `schemaVersion` (el reader valida `user_version`).
+- Lectores viejos (`READER_SCHEMA_VERSION = 1`) rechazan `user_version = 2` con
+  "actualiza la app": la app hermana debe subir su `READER_SCHEMA_VERSION` a 2
+  (aceptando 1 y 2) antes de publicar el primer módulo con palabras.
 - Los lectores ignoran campos desconocidos en manifest y tablas desconocidas en content.db.
 - Extensión reservada: módulos de audio/general-book en AMF v2 (fuera de alcance).

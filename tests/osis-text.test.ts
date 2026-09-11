@@ -1,5 +1,5 @@
 import { describe, test, expect } from "bun:test";
-import { osisToText } from "../scripts/lib/osis-text";
+import { osisToText, tidyPunctuation } from "../scripts/lib/osis-text";
 
 describe("osisToText", () => {
   test("extrae texto plano y headings", () => {
@@ -27,5 +27,13 @@ describe("osisToText", () => {
     const r = osisToText(`hola<note n="x"/> mundo`);
     expect(r.text).toBe("hola mundo");
     expect(r.footnotes).toEqual([]);
+  });
+
+  test("tidyPunctuation limpia artefactos de strip sin tocar v1", () => {
+    expect(tidyPunctuation("In the beginning , God created")).toBe("In the beginning, God created");
+    expect(tidyPunctuation("“ Yes , I am coming soon . ”")).toBe("“Yes, I am coming soon.”");
+    expect(tidyPunctuation("lamp to my feet , and a light")).toBe("lamp to my feet, and a light");
+    // osisToText NO aplica tidy (shas v1.0.0 intactos)
+    expect(osisToText("hola , mundo").text).toBe("hola , mundo");
   });
 });

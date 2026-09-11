@@ -9,8 +9,10 @@ export type AmodType = "bible" | "commentary" | "lexicon" | "dictionary" | "cros
 
 export interface AmodManifest {
   amf: 1;
-  schemaVersion: 1;
-  minReaderVersion: 1;
+  /** 1 = v1 (solo texto); 2 = v1.1 (añade tabla words en type=bible, §3.7) */
+  schemaVersion: 1 | 2;
+  /** debe igualar schemaVersion: el reader valida user_version (§6 compat) */
+  minReaderVersion: 1 | 2;
   id: string;
   type: AmodType;
   name: string;
@@ -80,6 +82,18 @@ export interface DevotionEntryRow {
   content: string;
 }
 
+export interface WordRow {
+  bookId: number;
+  chapter: number;
+  verse: number;
+  /** 1-based: orden del <w> dentro del versículo (§3.7) */
+  position: number;
+  surface: string;
+  strongs: string | null;
+  lemma: string | null;
+  morph: string | null;
+}
+
 export interface AmodContent {
   books: CanonBookRow[];
   verses?: BibleVerseRow[];
@@ -87,6 +101,8 @@ export interface AmodContent {
   footnotes?: FootnoteRow[];
   entries?: (DictEntryRow & { bookId?: number; chapter?: number; verse?: number })[];
   devotions?: DevotionEntryRow[];
+  /** solo type=bible con schemaVersion 2 (§3.7); resto de tipos → error */
+  words?: WordRow[];
   hasFTS?: boolean;
 }
 
@@ -102,18 +118,22 @@ export function validateManifest(m: AmodManifest): void {
     errors.push(`type inválido: ${m.type}`);
   if (!["ltr", "rtl"].includes(m.direction)) errors.push(`direction inválida: ${m.direction}`);
   if (m.amf !== 1) errors.push(`amf debe ser 1, recibido: ${m.amf}`);
-  if (!Number.isInteger(m.schemaVersion) || m.schemaVersion < 1)
-    errors.push(`schemaVersion inválido: ${m.schemaVersion}`);
-  if (!Number.isInteger(m.minReaderVersion) || m.minReaderVersion < 1)
-    errors.push(`minReaderVersion inválido: ${m.minReaderVersion}`);
+  if (!Number.isInteger(m.schemaVersion) || m.schemaVersion < 1 || m.schemaVersion > 2)
+    errors.push(`schemaVersion inválido: ${m.schemaVersion} (soportado 1..2)`);
+  if (!Number.isInteger(m.minReaderVersion) || m.minReaderVersion < 1 || m.minReaderVersion > 2)
+    errors.push(`minReaderVersion inválido: ${m.minReaderVersion} (soportado 1..2)`);
+  if (m.minReaderVersion !== m.schemaVersion)
+    errors.push(
+      `minReaderVersion (${m.minReaderVersion}) debe igualar schemaVersion (${m.schemaVersion}): el reader valida user_version (§6)`,
+    );
   if (!m.language || !/^[a-z]{2,3}(-[A-Za-z]{2,4})?$/.test(m.language))
     errors.push(`language inválido (ISO 639-1/3 esperado): ${m.language}`);
   if (!m.version || !/^\d+\.\d+\.\d+/.test(m.version)) errors.push(`version inválida (semver esperado): ${m.version}`);
   for (const k of ["hasStrongs", "hasMorphology", "hasFootnotes", "hasHeadings"] as const) {
     if (typeof m.features?.[k] !== "boolean") errors.push(`features.${k} debe ser boolean`);
   }
-  if (!Array.isArray(m.dependencies)) errors.push("dependencies debe ser array (vacío en v1)");
-  else if (m.dependencies.length > 0) errors.push("dependencies debe estar vacío en v1");
+  if (!Array.isArray(m.dependencies)) errors.push("dependencies debe ser array (vacío, reservado)");
+  else if (m.dependencies.length > 0) errors.push("dependencies debe estar vacío (reservado)");
   if (errors.length) throw new Error(`Manifest inválido para ${m.id ?? "?"}: ${errors.join("; ")}`);
 }
 
@@ -213,6 +233,33 @@ export function buildContentDb(m: AmodManifest, content: AmodContent): Uint8Arra
       for (const s of content.sections ?? []) insSection.run(s.bookId, s.chapter, s.beforeVerse, s.title);
       const insFoot = db.prepare("INSERT INTO footnotes (bookId, chapter, verse, caller, text) VALUES (?, ?, ?, ?, ?)");
       for (const f of content.footnotes ?? []) insFoot.run(f.bookId, f.chapter, f.verse, f.caller, f.text);
+      // AMF v1.1 §3.7: tabla words aditiva. schemaVersion 1 nunca la crea,
+      // de modo que los bytes de los .amod v1.0.0 no cambian con este código.
+      if (m.schemaVersion >= 2) {
+        db.exec(`
+          CREATE TABLE words (
+            bookId INTEGER NOT NULL, chapter INTEGER NOT NULL, verse INTEGER NOT NULL,
+            position INTEGER NOT NULL,
+            surface TEXT NOT NULL, strongs TEXT, lemma TEXT, morph TEXT,
+            PRIMARY KEY (bookId, chapter, verse, position)
+          );
+          CREATE INDEX idx_words_strongs ON words(strongs, bookId, chapter, verse) WHERE strongs IS NOT NULL;
+          CREATE INDEX idx_words_lemma ON words(lemma, bookId, chapter, verse) WHERE lemma IS NOT NULL;
+        `);
+        const sorted = [...(content.words ?? [])].sort(
+          (a, b) => a.bookId - b.bookId || a.chapter - b.chapter || a.verse - b.verse || a.position - b.position,
+        );
+        const insWord = db.prepare(
+          "INSERT INTO words (bookId, chapter, verse, position, surface, strongs, lemma, morph) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        );
+        for (const w of sorted) {
+          validateWordRow(m.id, w);
+          insWord.run(
+            w.bookId, w.chapter, w.verse, w.position, w.surface,
+            w.strongs ?? null, w.lemma ?? null, w.morph ?? null,
+          );
+        }
+      }
     }
   } else if (m.type === "dictionary" || m.type === "lexicon") {
     db.exec(`
@@ -252,7 +299,7 @@ export function buildContentDb(m: AmodManifest, content: AmodContent): Uint8Arra
     const insEntry = db.prepare("INSERT INTO entries (month, day, title, scripture, content) VALUES (?, ?, ?, ?, ?)");
     for (const e of content.devotions ?? []) insEntry.run(e.month, e.day, e.title, e.scripture ?? null, e.content);
   } else {
-    throw new Error(`Tipo no soportado en v1: ${m.type}`);
+    throw new Error(`Tipo no soportado: ${m.type}`);
   }
 
   db.exec(`
@@ -267,8 +314,29 @@ export function buildContentDb(m: AmodManifest, content: AmodContent): Uint8Arra
   return new Uint8Array(serialized);
 }
 
+function validateWordRow(id: string, w: WordRow): void {
+  const where = `${id} words ${w.bookId}:${w.chapter}:${w.verse}#${w.position}`;
+  if (![w.bookId, w.chapter, w.verse, w.position].every((n) => Number.isInteger(n) && n >= 1))
+    throw new Error(`${where}: bookId/chapter/verse/position deben ser enteros ≥ 1`);
+  if (!w.surface || !w.surface.trim()) throw new Error(`${where}: surface vacía`);
+  if (w.surface.includes("\0")) throw new Error(`${where}: surface con NUL`);
+  if (w.strongs != null && !/^[HG]\d+[a-z]?$/i.test(w.strongs))
+    throw new Error(`${where}: strongs inválido (${w.strongs}), esperado H/G + dígitos`);
+  for (const k of ["lemma", "morph"] as const) {
+    if (w[k] != null && (!w[k].trim() || w[k].includes("\0")))
+      throw new Error(`${where}: ${k} vacío o con NUL`);
+  }
+}
+
 export function buildAmod(m: AmodManifest, content: AmodContent): { bytes: Uint8Array; sha256: string; dbSize: number } {
   validateManifest(m);
+  const wordCount = content.words?.length ?? 0;
+  if (wordCount > 0) {
+    if (m.type !== "bible")
+      throw new Error(`Manifest ${m.id}: words solo soportado en type=bible en AMF v1.1 (§3.7)`);
+    if (m.schemaVersion < 2 || m.minReaderVersion < 2)
+      throw new Error(`Manifest ${m.id}: content.words requiere schemaVersion 2 + minReaderVersion 2`);
+  }
   const dbBytes = buildContentDb(m, content);
   const manifestBytes = new TextEncoder().encode(JSON.stringify(m, null, 2) + "\n");
   const zip = makeZip([

@@ -1,7 +1,7 @@
 import { unzipSync } from "fflate";
 import { loadSwordModule, extractBibleVerses, extractCommentaryEntries } from "./lib/sword-module";
 import { buildAmod } from "./lib/amf";
-import { osisToText } from "./lib/osis-text";
+import { osisToText, tidyPunctuation } from "./lib/osis-text";
 import { CANON } from "./lib/canon";
 
 const BOOK_ALIASES: Record<string, string> = {
@@ -95,8 +95,14 @@ for (const id of wanted) {
   if (!confName) throw new Error("Sin mods.d/*.conf");
   console.log("conf:", confName);
 
-  const mod = loadSwordModule(zip);
+  const mod = loadSwordModule(zip, {
+    otShift: def.slotShift?.ot ?? 0,
+    ntShift: def.slotShift?.nt ?? 0,
+  });
+  if (def.slotShift) console.log(`slotShift: ot=${def.slotShift.ot ?? 0} nt=${def.slotShift.nt ?? 0}`);
   const about = mod.conf.about.slice(0, 80);
+  const tidy = def.textTidy ? tidyPunctuation : (s: string) => s;
+  if (def.textTidy) console.log("textTidy: on (artefactos 'palabra ,' → 'palabra,')");
 
   let manifest;
   let content: any;
@@ -104,7 +110,12 @@ for (const id of wanted) {
   if (def.type === "bible" && mod.kind === "bible") {
     const ex = extractBibleVerses(mod);
     console.log(`versículos: ${ex.verses.length}, headings: ${ex.sections.length}, notas: ${ex.footnotes.length}`);
-    content = { books: bookRows(), verses: ex.verses, sections: ex.sections, footnotes: ex.footnotes };
+    content = {
+      books: bookRows(),
+      verses: ex.verses.map((v) => ({ ...v, text: tidy(v.text) })),
+      sections: ex.sections.map((s) => ({ ...s, title: tidy(s.title) })),
+      footnotes: ex.footnotes.map((f) => ({ ...f, text: tidy(f.text) })),
+    };
     runVerseChecks(def, mod);
     manifest = baseManifest(def);
   } else if (def.type === "commentary" && mod.kind === "bible") {

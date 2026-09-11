@@ -11,23 +11,31 @@ export class ZTextReader {
   private zdx: Buffer;
   private bzz: Buffer;
   private encoding: BufferEncoding;
+  private entrySize: 10 | 12;
   private cache: { idx: number; buf: Buffer } | null = null;
   readonly entryCount: number;
 
-  constructor(vss: Buffer, zdx: Buffer, bzz: Buffer, encoding = "utf8") {
+  /**
+   * @param entrySize 10 para zText/zText4 (block u32 + offset u32 + size u16),
+   *   12 para zCom/zCom4 (size u32: los comentarios superan 64KB por entrada).
+   */
+  constructor(vss: Buffer, zdx: Buffer, bzz: Buffer, encoding = "utf8", entrySize: 10 | 12 = 10) {
     this.vss = vss;
     this.zdx = zdx;
     this.bzz = bzz;
     this.encoding = /utf-?8/i.test(encoding) ? "utf8" : "latin1";
-    this.entryCount = Math.floor(vss.length / 10);
+    this.entrySize = entrySize;
+    if (vss.length % entrySize !== 0)
+      throw new Error(`vss length ${vss.length} no es múltiplo de entrySize ${entrySize}`);
+    this.entryCount = Math.floor(vss.length / entrySize);
   }
 
   entryAt(slot: number): ZTextEntry {
-    const off = slot * 10;
-    if (off + 10 > this.vss.length) return { buffNum: 0, start: 0, size: 0 };
+    const off = slot * this.entrySize;
+    if (off + this.entrySize > this.vss.length) return { buffNum: 0, start: 0, size: 0 };
     const buffNum = this.vss.readUInt32LE(off);
     const start = this.vss.readUInt32LE(off + 4);
-    const size = this.vss.readUInt16LE(off + 8);
+    const size = this.entrySize === 12 ? this.vss.readUInt32LE(off + 8) : this.vss.readUInt16LE(off + 8);
     return { buffNum, start, size };
   }
 
