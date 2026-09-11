@@ -18,7 +18,7 @@ jobs:
       - run: bun install --frozen-lockfile
       - run: bun run typecheck
       - run: bun test
-      # Construye los 6 módulos verificados (requiere red → CrossWire/ebible).
+      # Construye los 14 módulos verificados (requiere red → CrossWire/ebible).
       # El propio import-sword.ts hace doble build y compara sha256 (determinismo).
       - run: bun run import --module=ASV
       - run: bun run import --module=KJV
@@ -26,10 +26,18 @@ jobs:
       - run: bun run import --module=SMITH
       - run: bun run import --module=JFB
       - run: bun run import --module=WEB
+      - run: bun run import --module=HITCHCOCK
+      - run: bun run import --module=EASTON
+      - run: bun run import --module=NAVE
+      - run: bun run import --module=STRONGSGREEK
+      - run: bun run import --module=STRONGSHEBREW
+      - run: bun run import --module=ABBOTTSMITH
+      - run: bun run import --module=ISBE
+      - run: bun run import --module=TSK
       - run: bun run catalog
       - name: Verificar catálogo contra módulos
         run: |
-          for m in ASV KJV SME SMITH JFB WEB; do
+          for m in ASV KJV SME SMITH JFB WEB HITCHCOCK EASTON NAVE STRONGSGREEK STRONGSHEBREW ABBOTTSMITH ISBE TSK; do
             sha=$(sha256sum dist/$m.amod | cut -d' ' -f1)
             cat catalog/catalog.json | grep -q "$sha" || (echo "sha256 de $m no está en catalog.json" && exit 1)
           done
@@ -43,6 +51,14 @@ jobs:
             dist/SMITH.amod
             dist/JFB.amod
             dist/WEB.amod
+            dist/HITCHCOCK.amod
+            dist/EASTON.amod
+            dist/NAVE.amod
+            dist/STRONGSGREEK.amod
+            dist/STRONGSHEBREW.amod
+            dist/ABBOTTSMITH.amod
+            dist/ISBE.amod
+            dist/TSK.amod
             catalog/catalog.json
           generate_release_notes: true
       # El catálogo regenerado (con los shas del release) vuelve a main para que
