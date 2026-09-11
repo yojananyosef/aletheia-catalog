@@ -1,7 +1,7 @@
 {
   "format": "amf-catalog",
   "version": 1,
-  "generatedAt": "2026-09-01T16:12:16.956Z",
+  "generatedAt": "2026-09-11T18:27:49.689Z",
   "releaseBase": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download",
   "modules": [
     {
@@ -28,6 +28,32 @@
       "sizeBytes": 3393547,
       "sha256": "374780679b03a32ab08842392d6b0e7b3512baf6bf3c3abe2a6f4e5b53ccdba5",
       "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/ASV.amod",
+      "buildTool": "amf-1.0"
+    },
+    {
+      "id": "JFB",
+      "type": "commentary",
+      "name": "Jamieson, Fausset, Brown Bible Commentary",
+      "shortName": "JFB",
+      "language": "en",
+      "version": "1.0.0",
+      "publisher": "CrossWire Bible Society",
+      "license": "PublicDomain",
+      "copyright": "Jamieson, Fausset and Brown Commentary (1871), Public Domain",
+      "attribution": "Jamieson, Fausset, Brown Bible Commentary, Public Domain",
+      "source": "https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=JFB",
+      "features": {
+        "hasStrongs": false,
+        "hasMorphology": false,
+        "hasFootnotes": false,
+        "hasHeadings": false
+      },
+      "amf": 1,
+      "schemaVersion": 1,
+      "minReaderVersion": 1,
+      "sizeBytes": 8719990,
+      "sha256": "81a56fb3b73d8314f730e8ed90abce8b8bcf227ea147e42ce61507c845e2a1a0",
+      "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/JFB.amod",
       "buildTool": "amf-1.0"
     },
     {
@@ -106,6 +132,32 @@
       "sizeBytes": 2420521,
       "sha256": "9d714bb1f0eec31df65d2fdba531d14f8201e7321bead555e6b0c4b3f5174477",
       "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/SMITH.amod",
+      "buildTool": "amf-1.0"
+    },
+    {
+      "id": "WEB",
+      "type": "bible",
+      "name": "World English Bible",
+      "shortName": "WEB",
+      "language": "en",
+      "version": "1.0.0",
+      "publisher": "CrossWire Bible Society",
+      "license": "PublicDomain",
+      "copyright": "World English Bible, Public Domain",
+      "attribution": "World English Bible, Public Domain",
+      "source": "https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=WEB",
+      "features": {
+        "hasStrongs": false,
+        "hasMorphology": false,
+        "hasFootnotes": true,
+        "hasHeadings": true
+      },
+      "amf": 1,
+      "schemaVersion": 1,
+      "minReaderVersion": 1,
+      "sizeBytes": 3398971,
+      "sha256": "eb9e256898532f1426fd549805e23d8e1f3dc26e399db96151b205eef4f682bf",
+      "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/WEB.amod",
       "buildTool": "amf-1.0"
     }
   ]
