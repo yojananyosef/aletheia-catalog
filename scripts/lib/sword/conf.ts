@@ -7,7 +7,7 @@ export interface SwordConf {
   distributionLicense: string;
   about: string;
   shortCode?: string;
-  [key: string]: string | undefined;
+  [key: string]: string | Record<string, string> | undefined;
 }
 
 export function parseSwordConf(text: string): SwordConf {

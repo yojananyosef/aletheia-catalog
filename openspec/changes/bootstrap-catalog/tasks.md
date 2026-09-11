@@ -36,9 +36,19 @@
 
 ## Distribución
 
-- [x] `.github/workflows/release.yml`: tag v* → tests + builds + verificación de determinismo + release
+- [x] `.github/workflows/ci.yml`: push/PR → install + typecheck + tests
+- [x] `.github/workflows/release.yml`: tag v* → typecheck + tests + builds
+      (ASV/KJV/SME/SMITH) + verificación sha256 contra catalog.json + assets
 - [x] `docs/content-policy.md` + `docs/provenance/PROVENANCE.md` con evidencia por módulo
-- [ ] Publicar repo + primera release taggeada con los 4 módulos v1
+- [x] Publicar repo + release `v1.0.0` con los 4 módulos v1 (shas verificados)
+
+## Mantenimiento v1.0.x (sin romper shas publicados)
+
+- [x] `tsc --noEmit` en verde + `bun run verify` (typecheck + tests)
+- [x] Tests sin red: osis-text, conf parser, zip determinista, validateManifest
+- [ ] NO tocar en v1.0.x (cambian bytes/sha256 → reservado a AMF v1.1):
+      triggers FTS DELETE/UPDATE, FTS en devotion/keys, entidades nombradas
+      extendidas en osis-text, esquema SQLite/zip
 
 ## Lote v1.1 — habilita las fases F10-F12 de aletheia-platform
 

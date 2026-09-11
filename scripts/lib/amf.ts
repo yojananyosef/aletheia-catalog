@@ -101,6 +101,19 @@ export function validateManifest(m: AmodManifest): void {
   if (!["bible", "commentary", "lexicon", "dictionary", "crossref", "devotion"].includes(m.type))
     errors.push(`type inválido: ${m.type}`);
   if (!["ltr", "rtl"].includes(m.direction)) errors.push(`direction inválida: ${m.direction}`);
+  if (m.amf !== 1) errors.push(`amf debe ser 1, recibido: ${m.amf}`);
+  if (!Number.isInteger(m.schemaVersion) || m.schemaVersion < 1)
+    errors.push(`schemaVersion inválido: ${m.schemaVersion}`);
+  if (!Number.isInteger(m.minReaderVersion) || m.minReaderVersion < 1)
+    errors.push(`minReaderVersion inválido: ${m.minReaderVersion}`);
+  if (!m.language || !/^[a-z]{2,3}(-[A-Za-z]{2,4})?$/.test(m.language))
+    errors.push(`language inválido (ISO 639-1/3 esperado): ${m.language}`);
+  if (!m.version || !/^\d+\.\d+\.\d+/.test(m.version)) errors.push(`version inválida (semver esperado): ${m.version}`);
+  for (const k of ["hasStrongs", "hasMorphology", "hasFootnotes", "hasHeadings"] as const) {
+    if (typeof m.features?.[k] !== "boolean") errors.push(`features.${k} debe ser boolean`);
+  }
+  if (!Array.isArray(m.dependencies)) errors.push("dependencies debe ser array (vacío en v1)");
+  else if (m.dependencies.length > 0) errors.push("dependencies debe estar vacío en v1");
   if (errors.length) throw new Error(`Manifest inválido para ${m.id ?? "?"}: ${errors.join("; ")}`);
 }
 

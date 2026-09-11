@@ -10,7 +10,7 @@ export class ZTextReader {
   private vss: Buffer;
   private zdx: Buffer;
   private bzz: Buffer;
-  private encoding: string;
+  private encoding: BufferEncoding;
   private cache: { idx: number; buf: Buffer } | null = null;
   readonly entryCount: number;
 

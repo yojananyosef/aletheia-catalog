@@ -25,7 +25,15 @@ traducciones ES CC, originales, WLC/SBLGNT…) va a integraciones futuras.
 
 ```sh
 bun install
-bun run import --module ASV     # descarga de CrossWire → dist/ASV.amod
-bun run catalog                 # regenera catalog/catalog.json con sha256
-bun test                        # verificación: doble build reproducible + textos esperados
+bun run import --module=ASV    # descarga de CrossWire → dist/ASV.amod
+bun run import --module ASV    # forma alternativa (espacio en vez de =)
+bun run import --all           # todos los módulos no diferidos (equivale al default)
+bun run catalog                # regenera catalog/catalog.json con sha256
+bun test                       # verificación: doble build reproducible + textos esperados
+bun run typecheck              # tsc --noEmit (tipos estrictos)
 ```
+
+Requiere [Bun](https://bun.sh) ≥ 1.2 (`bun --version`). Los builds son
+deterministas: dos ejecuciones del mismo contenido producen el mismo sha256
+(ver `format/AMF-SPEC.md §1`). `catalog/catalog.json` publicado corresponde al
+release `v1.0.0` (assets `ASV/KJV/SME/SMITH.amod` verificados por sha256).

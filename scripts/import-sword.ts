@@ -5,13 +5,30 @@ import { osisToText } from "./lib/osis-text";
 import { CANON } from "./lib/canon";
 
 const BOOK_ALIASES: Record<string, string> = {
-  PSA: "Ps",
-  JHN: "John",
-  MAT: "Matt",
-  MRK: "Mark",
-  LUK: "Luke",
-  ROM: "Rom",
-  EPH: "Eph",
+  GEN: "Gen", EXO: "Exod", EXOD: "Exod", LEV: "Lev", NUM: "Num", DEU: "Deut", DEUT: "Deut",
+  JOS: "Josh", JOSH: "Josh", JDG: "Judg", JUDG: "Judg", RUT: "Ruth", RUTH: "Ruth",
+  "1SA": "1Sam", "1SAM": "1Sam", "2SA": "2Sam", "2SAM": "2Sam",
+  "1KI": "1Kgs", "1KGS": "1Kgs", "2KI": "2Kgs", "2KGS": "2Kgs",
+  "1CH": "1Chr", "1CHR": "1Chr", "2CH": "2Chr", "2CHR": "2Chr",
+  EZR: "Ezra", EZRA: "Ezra", NEH: "Neh", EST: "Esth", ESTH: "Esth",
+  JOB: "Job", PSA: "Ps", PS: "Ps", PRO: "Prov", PROV: "Prov",
+  ECC: "Eccl", ECCL: "Eccl", SNG: "Song", SONG: "Song",
+  ISA: "Isa", JER: "Jer", LAM: "Lam", EZK: "Ezek", EZEK: "Ezek",
+  DAN: "Dan", HOS: "Hos", JOL: "Joel", JOEL: "Joel", AMO: "Amos", AMOS: "Amos",
+  OBA: "Obad", OBAD: "Obad", JON: "Jonah", JONAH: "Jonah", MIC: "Mic",
+  NAM: "Nah", NAH: "Nah", HAB: "Hab", ZEP: "Zeph", ZEPH: "Zeph",
+  HAG: "Hag", ZEC: "Zech", ZECH: "Zech", MAL: "Mal",
+  MAT: "Matt", MATT: "Matt", MRK: "Mark", MARK: "Mark", LUK: "Luke", LUKE: "Luke",
+  JHN: "John", JOHN: "John", ACT: "Acts", ACTS: "Acts", ROM: "Rom",
+  "1CO": "1Cor", "1COR": "1Cor", "2CO": "2Cor", "2COR": "2Cor",
+  GAL: "Gal", EPH: "Eph", PHP: "Phil", PHIL: "Phil", COL: "Col",
+  "1TH": "1Thess", "1THESS": "1Thess", "2TH": "2Thess", "2THESS": "2Thess",
+  "1TI": "1Tim", "1TIM": "1Tim", "2TI": "2Tim", "2TIM": "2Tim",
+  TIT: "Titus", TITUS: "Titus", PHM: "Phlm", PHLM: "Phlm",
+  HEB: "Heb", JAS: "Jas", "1PE": "1Pet", "1PET": "1Pet",
+  "2PE": "2Pet", "2PET": "2Pet", "1JN": "1John", "1JOHN": "1John",
+  "2JN": "2John", "2JOHN": "2John", "3JN": "3John", "3JOHN": "3John",
+  JUD: "Jude", JUDE: "Jude", REV: "Rev",
 };
 
 
@@ -53,11 +70,16 @@ function parseRef(ref: string): Check {
 const defs = (await Bun.file(new URL("./modules-v1.json", import.meta.url)).json()) as any[];
 const args = process.argv.slice(2);
 const flag = (name: string) => args.includes(`--${name}`);
-const wanted = args.some((a) => a.startsWith("--module="))
-  ? [args.find((a) => a.startsWith("--module="))!.split("=")[1]]
-  : flag("all")
-    ? defs.filter((d) => !d.deferred).map((d) => d.id)
-    : defs.filter((d) => !d.deferred).map((d) => d.id);
+function parseWantedIds(): string[] {
+  const eq = args.find((a) => a.startsWith("--module="));
+  if (eq) return [eq.split("=")[1]];
+  const sp = args.indexOf("--module");
+  if (sp >= 0 && args[sp + 1] && !args[sp + 1].startsWith("--")) return [args[sp + 1]];
+  // Por defecto (con o sin --all): todos los módulos no diferidos.
+  return defs.filter((d) => !d.deferred).map((d) => d.id);
+}
+const wanted = parseWantedIds();
+void flag;
 
 for (const id of wanted) {
   const def = defs.find((d) => d.id === id);
@@ -183,8 +205,6 @@ function bookRows() {
     chapterCount: b.chapmax,
   }));
 }
-
-import { CANON } from "./lib/canon";
 
 function runVerseChecks(def: any, mod: any) {
   const bookIndex = (osis: string) => {

@@ -1,7 +1,7 @@
 export class RawLd4Reader {
   private dat: Buffer;
   private idx: Buffer;
-  private encoding: string;
+  private encoding: BufferEncoding;
   readonly entryCount: number;
 
   constructor(dat: Buffer, idx: Buffer, encoding = "utf8") {

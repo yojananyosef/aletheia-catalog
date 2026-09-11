@@ -8,7 +8,7 @@ export class RawTextReader {
   private bks: Buffer;
   private cps: Buffer;
   private chapmaxs: number[];
-  private encoding: string;
+  private encoding: BufferEncoding;
 
   constructor(data: Buffer, bks: Buffer, cps: Buffer, chapmaxs: number[], encoding = "utf8") {
     this.data = data;

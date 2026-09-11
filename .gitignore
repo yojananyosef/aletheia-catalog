@@ -1,7 +1,6 @@
 node_modules/
-dist/*.amod
+dist/
 tmp/
 cache/
 *.log
 .DS_Store
-.github/

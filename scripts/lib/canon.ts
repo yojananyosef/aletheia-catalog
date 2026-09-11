@@ -17,6 +17,10 @@ interface RawBook {
   testament: "OT" | "NT";
 }
 
+const books = data.books as unknown as RawBook[];
+const vmOT = data.vmOT as number[];
+const vmNT = data.vmNT as number[];
+
 const mk = (books: RawBook[], vmFlat: number[]): CanonBook[] => {
   let p = 0;
   return books.map((b) => {
@@ -26,8 +30,8 @@ const mk = (books: RawBook[], vmFlat: number[]): CanonBook[] => {
   });
 };
 
-const ot = mk(data.books.filter((b) => b.testament === "OT"), data.vmOT);
-const nt = mk(data.books.filter((b) => b.testament === "NT"), data.vmNT);
+const ot = mk(books.filter((b) => b.testament === "OT"), vmOT);
+const nt = mk(books.filter((b) => b.testament === "NT"), vmNT);
 export const CANON: CanonBook[] = [...ot, ...nt];
 
 export const TOTAL_VERSES = CANON.reduce((s, b) => s + b.vm.reduce((x, v) => x + v, 0), 0);

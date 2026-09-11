@@ -7,7 +7,9 @@
   "scripts": {
     "import": "bun run scripts/import-sword.ts",
     "catalog": "bun run scripts/build-catalog.ts",
-    "test": "bun test"
+    "test": "bun test",
+    "typecheck": "tsc --noEmit",
+    "verify": "bun run typecheck && bun test"
   },
   "devDependencies": {
     "@types/bun": "^1.2.0",

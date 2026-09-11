@@ -121,10 +121,6 @@ export function loadSwordModule(zipBytes: Uint8Array): SwordModule {
 
   if (["zld","zld4","rawld4","rawld"].includes(modDrv.toLowerCase())) {
     const prefix = dataPath;
-    const byExt = (ext: string): Buffer | null => {
-      const f = pick(files, [prefix + mod.id.toLowerCase() + ext, prefix + "sme" + ext].map((p) => p.replace(/^\.\//, "")));
-      return f ? Buffer.from(f) : null;
-    };
     let dat = pick(files, keys0(prefix).map((p) => p + ".dat"));
     let idx = pick(files, keys0(prefix).map((p) => p + ".idx"));
     const zdx = pick(files, keys0(prefix).map((p) => p + ".zdx"));
@@ -141,20 +137,21 @@ export function loadSwordModule(zipBytes: Uint8Array): SwordModule {
     }
 
     if (!dat || !idx || !zdx || !zdt) throw new Error(`Faltan .dat/.idx/.zdx/.zdt en ${prefix}`);
-    dat = Buffer.from(dat);
-    idx = Buffer.from(idx);
+    const datBuf = Buffer.from(dat);
+    const idxBuf = Buffer.from(idx);
     const zdxBuf = Buffer.from(zdx);
     const zdtBuf = Buffer.from(zdt);
     const entries: { key: string; content: string }[] = [];
     let blockCache: { idx: number; entries: string[] } | null = null;
-    for (let i = 0; i * 8 + 8 <= idx.length; i++) {
-      const start = idx.readUInt32LE(i * 8);
-      const size = idx.readUInt32LE(i * 8 + 4);
+    const textEnc: BufferEncoding = /utf-?8/i.test(conf.encoding) ? "utf8" : "latin1";
+    for (let i = 0; i * 8 + 8 <= idxBuf.length; i++) {
+      const start = idxBuf.readUInt32LE(i * 8);
+      const size = idxBuf.readUInt32LE(i * 8 + 4);
       if (!size) continue;
-      const chunk = dat.subarray(start, start + size);
+      const chunk = datBuf.subarray(start, start + size);
       const nl = chunk.indexOf(10);
       if (nl < 0) continue;
-      const key = chunk.subarray(0, nl).toString(conf.encoding).replace(/\0/g, "").trim();
+      const key = chunk.subarray(0, nl).toString(textEnc).replace(/\0/g, "").trim();
       const rest = chunk.subarray(nl + 1);
       if (rest.length < 8) continue;
       const block = rest.readUInt32LE(0);
@@ -165,7 +162,7 @@ export function loadSwordModule(zipBytes: Uint8Array): SwordModule {
         const zStart = zdxBuf.readUInt32LE(zdxOff);
         const zSize = zdxBuf.readUInt32LE(zdxOff + 4);
         const inflated = inflateSync(zdtBuf.subarray(zStart, zStart + zSize));
-        blockCache = { idx: block, entries: inflated.toString(/utf-?8/i.test(conf.encoding) ? "utf8" : "latin1").split("\n") };
+        blockCache = { idx: block, entries: inflated.toString(textEnc).split("\n") };
       }
       const content = blockCache.entries[entryIdx] ?? "";
       if (key) entries.push({ key, content: content.replace(/\0/g, "").replace(/\r/g, "").trim() });

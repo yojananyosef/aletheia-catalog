@@ -68,7 +68,7 @@ SQLite 3 con esta configuración obligatoria:
 ```sql
 PRAGMA page_size = 8192;        -- antes de crear tablas
 PRAGMA journal_mode = DELETE;   -- sin residuos WAL al distribuir
--- al cerrar: PRAGMA application_id = 1096035140;  -- 0x41504C41 'APLA'
+-- al cerrar: PRAGMA application_id = 1096035140;  -- 0x414D4F44 'AMOD'
 --            PRAGMA user_version = 1;            -- = schemaVersion
 --            VACUUM;
 ```
