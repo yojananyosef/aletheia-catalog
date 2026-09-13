@@ -18,8 +18,8 @@ jobs:
       - run: bun install --frozen-lockfile
       - run: bun run typecheck
       - run: bun test
-      # Construye los 14 módulos verificados (requiere red → CrossWire/ebible).
-      # El propio import-sword.ts hace doble build y compara sha256 (determinismo).
+      # Construye los 17 módulos verificados (requiere red → CrossWire/ebible/CCEL/sacred-texts).
+      # Los propios import-*.ts hacen doble build y comparan sha256 (determinismo).
       - run: bun run import --module=ASV
       - run: bun run import --module=KJV
       - run: bun run import --module=SME
@@ -34,10 +34,13 @@ jobs:
       - run: bun run import --module=ABBOTTSMITH
       - run: bun run import --module=ISBE
       - run: bun run import --module=TSK
+      - run: bun run import:ccel --module=VINCENT
+      - run: bun run import:ccel --module=APF
+      - run: bun run import:ccel --module=CREEDS
       - run: bun run catalog
       - name: Verificar catálogo contra módulos
         run: |
-          for m in ASV KJV SME SMITH JFB WEB HITCHCOCK EASTON NAVE STRONGSGREEK STRONGSHEBREW ABBOTTSMITH ISBE TSK; do
+          for m in ASV KJV SME SMITH JFB WEB HITCHCOCK EASTON NAVE STRONGSGREEK STRONGSHEBREW ABBOTTSMITH ISBE TSK VINCENT APF CREEDS; do
             sha=$(sha256sum dist/$m.amod | cut -d' ' -f1)
             cat catalog/catalog.json | grep -q "$sha" || (echo "sha256 de $m no está en catalog.json" && exit 1)
           done
@@ -59,6 +62,9 @@ jobs:
             dist/ABBOTTSMITH.amod
             dist/ISBE.amod
             dist/TSK.amod
+            dist/VINCENT.amod
+            dist/APF.amod
+            dist/CREEDS.amod
             catalog/catalog.json
           generate_release_notes: true
       # El catálogo regenerado (con los shas del release) vuelve a main para que

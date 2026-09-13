@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "import": "bun run scripts/import-sword.ts",
+    "import:ccel": "bun run scripts/import-ccel.ts",
     "catalog": "bun run scripts/build-catalog.ts",
     "test": "bun test",
     "typecheck": "tsc --noEmit",

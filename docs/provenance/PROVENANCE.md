@@ -44,11 +44,39 @@ Evidencia de licencia y fuente por módulo publicado. Regla: sin evidencia, sin 
 
 ## Diferidos (v1.1) — sin publicación hasta resolver
 
-| id | Motivo |
-|----|--------|
-| Vincent | módulo SWORD inexistente en el repo principal de CrossWire (ModInfo: "No module found", 2026-09-11) — vía ETL manual desde CCEL pendiente |
-| APF | driver genbook (rawGenBook) pendiente |
-| Creeds | ETL manual desde CCEL pendiente |
+Ninguno: los 3 diferidos originales (Vincent, APF, Creeds) se cerraron en
+`closes-logos-mirror` vía ETL manual PD (ver abajo). El espejo Logos free de 9
+está completo.
+
+## Lote closes-logos-mirror (verificado local 2026-09-13, pendiente release v1.2.0)
+
+Los 3 sin fuente SWORD (`ModInfo: No module found` para `Vincent`/`APF`/`Creeds`;
+mirror `rawzip/` con 463 zips sin ellos, verificado 2026-09-13). ETL manual desde
+fuentes PD, todo `schemaVersion 1`, doble build sha256 idéntico.
+
+- **VINCENT.amod** — *Word Studies in the New Testament* (1887) de Marvin R.
+  Vincent (1834–1922), Public Domain por antigüedad. Fuente: Internet Sacred Text
+  Archive, HTML estático por capítulo (`sacred-texts.com/bib/cmt/vws/<lib><cap>.htm`,
+  artículo con secciones `John 1:1`…; intros `*000.htm` omitidas como las intros
+  SWORD). Tipo `commentary` disperso (solo versículos con comentario, NT).
+  **5.720** entradas (259/260 capítulos NT; Filemón sin cobertura en la fuente).
+  Checks: JHN 1:1→"In the beginning was". 3.20MB.
+  sha256 `bd96357c4aad216967fda993d6109a978565b550baadd8b727ceb0a577f55b47`
+- **APF.amod** — *The Apostolic Fathers*, trad. J. B. Lightfoot (1828–1889),
+  Public Domain (cabecera CCEL `Rights: Public Domain`, base impresa Baker 1956).
+  Fuente: `ccel.org/ccel/l/lightfoot/fathers/cache/fathers.txt`. Tipo `dictionary`:
+  15 documentos partidos por sus marcadores (`1 Clem. 1`…`Diogn. 12`).
+  **274** entradas. Checks: 1 Clem. 1 / IgnEph. 1 / Did. 1 / Herm.Mand / Diogn. 12.
+  349KB.
+  sha256 `470a7efdf4dc0e53be827dcf8a7485f59104317485087621a0462089ddc1d6d2`
+- **CREEDS.amod** — *Historic Creeds and Confessions*, ed. Rick Brannan, Public
+  Domain (cabecera CCEL `Rights: Public Domain`). Fuente:
+  `ccel.org/ccel/b/brannan/hstcrcon/cache/hstcrcon.txt`. Tipo `dictionary`:
+  Apostles/Nicene/Athanasian + Heidelberg (52 Lord's Days + 129 Questions) +
+  Canons of Dordt (5 heads + rechazos) + Belgic (37 Articles); secciones-nota
+  `[...]` e índices omitidos; claves con contexto (`Heidelberg Q1`,
+  `Canons I Art 1`, `Belgic Art I`…). **330** entradas. 167KB.
+  sha256 `8c0f63a78c721be392d7073872eddcd3657008545960f5ce3c8ab844bddf074a`
 
 ## Lote v1.1 PD (verificado local 2026-09-11, pendiente release v1.1.0) — F10-F12 de aletheia-platform
 

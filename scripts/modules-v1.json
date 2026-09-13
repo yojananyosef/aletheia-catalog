@@ -109,17 +109,19 @@
   {
     "id": "VINCENT",
     "type": "commentary",
-    "swordModule": "Vincent",
+    "swordModule": null,
+    "ccelKind": "vincent",
+    "sourceUrl": "https://sacred-texts.com/bib/cmt/vws/",
     "name": "Vincent's Word Studies in the New Testament",
     "shortName": "Vincent",
     "language": "en",
     "direction": "ltr",
     "version": "1.0.0",
-    "publisher": "CrossWire Bible Society",
+    "publisher": "Internet Sacred Text Archive",
     "license": "PublicDomain",
-    "copyright": "Vincent's Word Studies (1887), Public Domain",
-    "source": "https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=Vincent",
-    "attribution": "Vincent's Word Studies in the New Testament, Public Domain",
+    "copyright": "Vincent's Word Studies in the New Testament (1887), Public Domain",
+    "source": "https://sacred-texts.com/bib/cmt/vws/index.htm",
+    "attribution": "Vincent's Word Studies in the New Testament (1887), Public Domain",
     "features": {
       "hasStrongs": false,
       "hasMorphology": false,
@@ -127,9 +129,8 @@
       "hasHeadings": false
     },
     "checks": {
-      "JHN 1:1": "Word"
-    },
-    "deferred": "módulo SWORD inexistente en el repo principal de CrossWire (ModInfo: 'No module found', verificado 2026-09-11); vía ETL manual desde CCEL pendiente (mismo bucket que Creeds)"
+      "JHN 1:1": "In the beginning was"
+    }
   },
   {
     "id": "SME",
@@ -186,40 +187,50 @@
   {
     "id": "APF",
     "type": "dictionary",
-    "swordModule": "APF",
-    "deferred": "driver genbook (rawGenBook) pendiente en v1",
+    "swordModule": null,
+    "ccelKind": "apf",
+    "sourceUrl": "https://ccel.org/ccel/l/lightfoot/fathers/cache/fathers.txt",
     "name": "The Apostolic Fathers in English",
     "shortName": "APF",
     "language": "en",
     "direction": "ltr",
-    "version": "0.0.0",
-    "publisher": "CrossWire Bible Society",
+    "version": "1.0.0",
+    "publisher": "Christian Classics Ethereal Library",
     "license": "PublicDomain",
-    "copyright": "Apostolic Fathers (LightFoot), Public Domain",
-    "source": "https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=APF",
-    "attribution": "The Apostolic Fathers in English, Public Domain",
+    "copyright": "The Apostolic Fathers (J. B. Lightfoot translation), Public Domain",
+    "source": "https://ccel.org/ccel/lightfoot/fathers.html",
+    "attribution": "The Apostolic Fathers in English (Lightfoot), Public Domain",
     "features": {
       "hasStrongs": false,
       "hasMorphology": false,
       "hasFootnotes": false,
       "hasHeadings": true
     },
-    "checks": {}
+    "checks": {
+      "keys": [
+        "1 Clem. 1",
+        "IgnEph. 1",
+        "Did. 1",
+        "Herm.Mand",
+        "Diogn. 12"
+      ]
+    }
   },
   {
     "id": "CREEDS",
     "type": "dictionary",
     "swordModule": null,
-    "deferred": "ETL manual desde CCEL (textos PD) pendiente en v1",
+    "ccelKind": "creeds",
+    "sourceUrl": "https://ccel.org/ccel/b/brannan/hstcrcon/cache/hstcrcon.txt",
     "name": "Historic Creeds and Confessions",
     "shortName": "Creeds",
     "language": "en",
     "direction": "ltr",
-    "version": "0.0.0",
-    "publisher": "aletheia-catalog",
+    "version": "1.0.0",
+    "publisher": "Christian Classics Ethereal Library",
     "license": "PublicDomain",
     "copyright": "Historic Creeds and Confessions, Public Domain",
-    "source": "https://ccel.org/",
+    "source": "https://ccel.org/ccel/brannan/hstcrcon.html",
     "attribution": "Historic Creeds and Confessions, Public Domain",
     "features": {
       "hasStrongs": false,
@@ -227,7 +238,19 @@
       "hasFootnotes": false,
       "hasHeadings": false
     },
-    "checks": {}
+    "checks": {
+      "keys": [
+        "Apostles' Creed",
+        "Nicene Creed",
+        "Athanasian Creed",
+        "Heidelberg Q1",
+        "Heidelberg Q129",
+        "Canons I Art 1",
+        "Canons V Art 15",
+        "Belgic Art I",
+        "Belgic Art XXXVII"
+      ]
+    }
   },
   {
     "id": "HITCHCOCK",

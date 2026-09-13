@@ -12,6 +12,8 @@ Catálogo oficial de módulos bíblicos **`.amod`** (Aletheia Module Format v1) 
   licencia, sha256, URL de descarga). Es lo único que la app consume.
 - **`scripts/`** — ETL en Bun: lee módulos SWORD de [CrossWire](https://www.crosswire.org)
   (zText4/zCom4/RawText/rawld4) y fuentes PD/CC, y produce `.amod` con texto plano limpio.
+  Vincent/APF/Creeds (sin fuente SWORD) vienen de ETL manual: sacred-texts + CCEL
+  (`bun run import:ccel`).
 - **`docs/content-policy.md`** — política de contenido: solo dominio público o licencias
   verificadas; modelo de disclaimer y contacto (estilo CrossWire).
 
@@ -27,7 +29,8 @@ traducciones ES CC, originales, WLC/SBLGNT…) va a integraciones futuras.
 bun install
 bun run import --module=ASV    # descarga de CrossWire → dist/ASV.amod
 bun run import --module ASV    # forma alternativa (espacio en vez de =)
-bun run import --all           # todos los módulos no diferidos (equivale al default)
+bun run import --all           # todos los módulos SWORD no diferidos (equivale al default)
+bun run import:ccel --all      # Vincent + APF + Creeds (ETL manual sacred-texts/CCEL)
 bun run catalog                # regenera catalog/catalog.json con sha256
 bun test                       # verificación: doble build reproducible + textos esperados
 bun run typecheck              # tsc --noEmit (tipos estrictos)

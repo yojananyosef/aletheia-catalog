@@ -54,8 +54,8 @@ descarga desde URLs del catálogo; no re-hospeda contenido en servidores propios
 | KJV | CrossWire SWORD `KJV` | PublicDomain (1769) | crosswire.org ModInfo |
 | WEB | CrossWire SWORD `WEB` | PublicDomain | crosswire.org ModInfo |
 | JFB | CrossWire SWORD `JFB` | PublicDomain | crosswire.org ModInfo |
-| Vincent | CrossWire SWORD `Vincent` | PublicDomain | verificar en ETL |
+| Vincent | sacred-texts.com `vws` (obra 1887, autor †1922) | PublicDomain | sacred-texts.org + CCEL autor |
 | SME | CrossWire SWORD `SME` | PublicDomain | crosswire.org ModInfo |
-| APF | CrossWire SWORD `APF` | PublicDomain (LightFoot) | verificar en ETL |
-| Creeds | CCEL (textos PD) | PublicDomain | ccel.org |
+| APF | CCEL `lightfoot/fathers` (trad. Lightfoot †1889) | PublicDomain | ccel.org (`Rights: Public Domain`) |
+| Creeds | CCEL `brannan/hstcrcon` | PublicDomain | ccel.org (`Rights: Public Domain`) |
 | Smith | CrossWire SWORD `Smith` | PublicDomain (1884) | crosswire.org ModInfo |

@@ -1,7 +1,7 @@
 {
   "format": "amf-catalog",
   "version": 1,
-  "generatedAt": "2026-09-11T19:21:59.010Z",
+  "generatedAt": "2026-09-13T18:00:33.757Z",
   "releaseBase": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download",
   "modules": [
     {
@@ -31,6 +31,32 @@
       "buildTool": "amf-1.0"
     },
     {
+      "id": "APF",
+      "type": "dictionary",
+      "name": "The Apostolic Fathers in English",
+      "shortName": "APF",
+      "language": "en",
+      "version": "1.0.0",
+      "publisher": "Christian Classics Ethereal Library",
+      "license": "PublicDomain",
+      "copyright": "The Apostolic Fathers (J. B. Lightfoot translation), Public Domain",
+      "attribution": "The Apostolic Fathers in English (Lightfoot), Public Domain",
+      "source": "https://ccel.org/ccel/lightfoot/fathers.html",
+      "features": {
+        "hasStrongs": false,
+        "hasMorphology": false,
+        "hasFootnotes": false,
+        "hasHeadings": true
+      },
+      "amf": 1,
+      "schemaVersion": 1,
+      "minReaderVersion": 1,
+      "sizeBytes": 356864,
+      "sha256": "470a7efdf4dc0e53be827dcf8a7485f59104317485087621a0462089ddc1d6d2",
+      "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/APF.amod",
+      "buildTool": "amf-1.0"
+    },
+    {
       "id": "ASV",
       "type": "bible",
       "name": "American Standard Version",
@@ -54,6 +80,32 @@
       "sizeBytes": 3393547,
       "sha256": "374780679b03a32ab08842392d6b0e7b3512baf6bf3c3abe2a6f4e5b53ccdba5",
       "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/ASV.amod",
+      "buildTool": "amf-1.0"
+    },
+    {
+      "id": "CREEDS",
+      "type": "dictionary",
+      "name": "Historic Creeds and Confessions",
+      "shortName": "Creeds",
+      "language": "en",
+      "version": "1.0.0",
+      "publisher": "Christian Classics Ethereal Library",
+      "license": "PublicDomain",
+      "copyright": "Historic Creeds and Confessions, Public Domain",
+      "attribution": "Historic Creeds and Confessions, Public Domain",
+      "source": "https://ccel.org/ccel/brannan/hstcrcon.html",
+      "features": {
+        "hasStrongs": false,
+        "hasMorphology": false,
+        "hasFootnotes": false,
+        "hasHeadings": false
+      },
+      "amf": 1,
+      "schemaVersion": 1,
+      "minReaderVersion": 1,
+      "sizeBytes": 170775,
+      "sha256": "8c0f63a78c721be392d7073872eddcd3657008545960f5ce3c8ab844bddf074a",
+      "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/CREEDS.amod",
       "buildTool": "amf-1.0"
     },
     {
@@ -340,6 +392,32 @@
       "sizeBytes": 5432859,
       "sha256": "023ad626356d5d47d76d92268a2f04f7c413236e984fd4353eb40a6326a68a3b",
       "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/TSK.amod",
+      "buildTool": "amf-1.0"
+    },
+    {
+      "id": "VINCENT",
+      "type": "commentary",
+      "name": "Vincent's Word Studies in the New Testament",
+      "shortName": "Vincent",
+      "language": "en",
+      "version": "1.0.0",
+      "publisher": "Internet Sacred Text Archive",
+      "license": "PublicDomain",
+      "copyright": "Vincent's Word Studies in the New Testament (1887), Public Domain",
+      "attribution": "Vincent's Word Studies in the New Testament (1887), Public Domain",
+      "source": "https://sacred-texts.com/bib/cmt/vws/index.htm",
+      "features": {
+        "hasStrongs": false,
+        "hasMorphology": false,
+        "hasFootnotes": false,
+        "hasHeadings": false
+      },
+      "amf": 1,
+      "schemaVersion": 1,
+      "minReaderVersion": 1,
+      "sizeBytes": 3360372,
+      "sha256": "bd96357c4aad216967fda993d6109a978565b550baadd8b727ceb0a577f55b47",
+      "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/VINCENT.amod",
       "buildTool": "amf-1.0"
     },
     {

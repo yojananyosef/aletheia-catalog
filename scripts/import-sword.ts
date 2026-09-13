@@ -84,6 +84,10 @@ void flag;
 for (const id of wanted) {
   const def = defs.find((d) => d.id === id);
   if (!def) throw new Error(`Módulo desconocido: ${id}`);
+  if (def.ccelKind) {
+    console.warn(`[skip] ${id}: ETL manual (usa: bun run import:ccel --module=${id})`);
+    continue;
+  }
   if (def.deferred) {
     console.warn(`[skip] ${id}: ${def.deferred}`);
     continue;
