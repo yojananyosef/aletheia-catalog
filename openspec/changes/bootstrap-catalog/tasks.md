@@ -44,10 +44,9 @@
 - [x] Construir Smith (RawLD): 4.639 entradas deduplicadas; determinista
 - [x] No-regresión 2026-09-11: los 4 reconstruyen **byte-idénticos** a v1.0.0 tras todos los cambios v1.1 (shas verificados contra catalog.json)
 - [x] No-regresión fix zLD 2026-09-11: ASV/JFB/KJV/SMITH/WEB reconstruidos **byte-idénticos** (shas = catalog.json); solo SME cambia (→ 1.0.1, sha `cfbe6b9e…`)
-- [x] JFB (zCom4 12B): 24.586 entradas; checks ✓; determinista — verificado local, pendiente release v1.1.0
-- [x] WEB (engweb2025peb, KJV66): 31.095 vss, 165 headings, 1.568 notas; 5 checks ✓; determinista — verificado local, pendiente release v1.1.0
-- [ ] Vincent: sin fuente SWORD (ModInfo: No module found) — ETL manual CCEL con Creeds
-- [ ] APF (genbook), Creeds (ETL CCEL): v1.1 tardía
+- [x] JFB (zCom4 12B): 24.586 entradas; checks ✓; determinista — PUBLICADO (v1.2.0)
+- [x] WEB (engweb2025peb, KJV66): 31.095 vss, 165 headings, 1.568 notas; 5 checks ✓; determinista — PUBLICADO (v1.2.0)
+- [x] Vincent/APF/Creeds: sin fuente SWORD → ETL manual CCEL (`closes-logos-mirror`, COMPLETADO 2026-09-13) — PUBLICADOS en v1.3.0 (17/17 módulos)
 
 ## AMF v1.1 — formato words (Fase 1, implementado, sin publicar módulos v2)
 
@@ -63,13 +62,21 @@
 - WEB: el zip CrossWire/ebible `engweb2025eb` es NRSVA con apócrifos (NT descuadrado: Rev 22:21 leía 22:18). Fuente correcta: `engweb2025peb` (protestante, KJV, conteos exactos) + `slotShift.nt=1` (quirk del exportador, verificado en plano) + `textTidy` opt-in (osisToText intacto para v1).
 - `mergeSections`: varios `<title>` por versículo se unen con " — " (PK intacta, sin cambio de DDL).
 
-## Distribución
+## Distribución (canal git+raw desde v1.3.0 — 2026-09-13)
 
 - [x] `.github/workflows/ci.yml`: push/PR → install + typecheck + tests
-- [x] `.github/workflows/release.yml`: tag v* → typecheck + tests + builds
-      (ASV/KJV/SME/SMITH) + verificación sha256 contra catalog.json + assets
+- [x] `.github/workflows/release.yml` (reescrito): tag v* → typecheck + tests +
+      coherencia catálogo↔dist + pin releaseBase al tag + CORS `ACAO:*` en
+      muestra chica+grande+catálogo. Sin rebuild de red ni assets .amod
+      (el Release conserva solo catalog.json como acta; 22s).
+- [x] `dist/*.amod` commiteados en git (17 archivos, 55MB) + `releaseBase`
+      pineado a tag con CORS `*` — resuelve la descarga web de aletheia-platform
+- [x] `catalog/latest.json` flotante (`amf-latest-pointer` → tag + catalogUrl):
+      release.yml lo actualiza en main tras cada tag; test gate de coherencia
+      puntero↔tag en `tests/catalog-dist.test.ts`
 - [x] `docs/content-policy.md` + `docs/provenance/PROVENANCE.md` con evidencia por módulo
-- [x] Publicar repo + release `v1.0.0` con los 4 módulos v1 (shas verificados)
+- [x] Releases: `v1.0.0` (4 módulos) → `v1.1.x/v1.2.0` (lote PD: 14 módulos) →
+      `v1.3.0` (17 módulos: +VINCENT/APF/CREEDS, canal git+raw)
 
 ## Mantenimiento v1.0.x (sin romper shas publicados)
 
@@ -116,8 +123,9 @@ determinista, 6 .amod previos byte-idénticos (shas = catalog.json).
 - [x] Tests nuevos sin red: `tests/zcom.test.ts` (stride 10/12 + fallback),
       `tests/strongs.test.ts` ("00001"→G1, "00001\"→H1, "00000"→null),
       casos TEI/ThML en `tests/osis-text.test.ts` (53 pass)
-- [x] `catalog/catalog.json` regenerado (14 módulos) + `PROVENANCE.md` con
-      entrada por módulo (fuente, licencia PD, conteos, sha)
+- [x] `catalog/catalog.json` regenerado (14 módulos entonces; 17 hoy con
+      VINCENT/APF/CREEDS en v1.3.0) + `PROVENANCE.md` con entrada por módulo
+      (fuente, licencia PD, conteos, sha)
 
 ### Excluidos del lote (bloqueo licencia/política, sin tocar)
 
