@@ -25,6 +25,19 @@ describe("canal de distribución (CORS/releaseBase)", () => {
     }
   });
 
+  test("puntero latest.json coherente con el tag pineado", async () => {
+    const latest = (await Bun.file(new URL("../catalog/latest.json", import.meta.url)).json()) as any;
+    expect(latest.format).toBe("amf-latest-pointer");
+    // El tag del puntero debe ser el mismo que el de releaseBase: las apps
+    // resuelven latest -> catalogo pineado de ese tag.
+    const tag = catalog.releaseBase.split("/").at(-2);
+    expect(latest.tag).toBe(tag);
+    expect(latest.version).toBe((tag as string).replace(/^v/, ""));
+    expect(latest.catalogUrl).toBe(
+      `https://raw.githubusercontent.com/yojananyosef/aletheia-catalog/${tag}/catalog/catalog.json`,
+    );
+  });
+
   test("dist/*.amod commiteados coinciden con el catálogo (sha256 + size)", async () => {
     for (const m of catalog.modules) {
       const path = `${distDir}${m.id}.amod`;

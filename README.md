@@ -52,3 +52,7 @@ release `v1.0.0` (assets `ASV/KJV/SME/SMITH.amod` verificados por sha256).
 - Publicar nueva versión: importar/reconstruir → `bun run catalog` →
   commit de `dist/` + `catalog.json` → push → `git tag vX.Y.Z` → push del tag.
   El `sha256` valida el cambio de host: la app consumidora no requiere cambios.
+- Puntero flotante `catalog/latest.json` (`amf-latest-pointer` → tag + catalogUrl):
+  el workflow `release` lo actualiza solo en `main` tras cada tag. Las apps lo
+  leen para ver siempre la última versión con fallback a su pin si falla;
+  las versiones por tag siguen inmutables.

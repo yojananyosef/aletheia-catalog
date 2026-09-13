@@ -64,3 +64,35 @@ jobs:
           files: |
             catalog/catalog.json
           generate_release_notes: true
+      # Puntero flotante latest.json en main: las apps lo leen para ver siempre
+      # la ultima version sin hardcodear el tag (con fallback a su pin si falla).
+      # Las versiones siguen inmutables por tag; esto solo mueve el puntero.
+      - name: Actualizar puntero latest.json en main
+        run: |
+          TAG="${{ github.ref_name }}"
+          git fetch origin main
+          git checkout main
+          git pull --rebase origin main || true
+          python3 - "$TAG" <<'EOF'
+          import json, sys
+          tag = sys.argv[1]
+          assert tag.startswith('v'), f'tag inesperado: {tag}'
+          ptr = {
+            "format": "amf-latest-pointer",
+            "version": tag[1:],
+            "tag": tag,
+            "catalogUrl": f"https://raw.githubusercontent.com/yojananyosef/aletheia-catalog/{tag}/catalog/catalog.json",
+          }
+          json.dump(ptr, open('catalog/latest.json', 'w'), indent=2)
+          open('catalog/latest.json', 'a').write('\n')
+          EOF
+          git add catalog/latest.json
+          if git diff --cached --quiet; then
+            echo "latest ya apunta a $TAG"
+          else
+            git -c user.name="github-actions[bot]" \
+              -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              commit -m "chore: puntero latest -> $TAG"
+            git pull --rebase origin main
+            git push origin main
+          fi
