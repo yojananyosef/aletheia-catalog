@@ -1,8 +1,8 @@
 {
   "format": "amf-catalog",
   "version": 1,
-  "generatedAt": "2026-09-13T18:05:57.915Z",
-  "releaseBase": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download",
+  "generatedAt": "2026-09-13T18:29:29.171Z",
+  "releaseBase": "https://raw.githubusercontent.com/yojananyosef/aletheia-catalog/v1.3.0/dist",
   "modules": [
     {
       "id": "ABBOTTSMITH",
@@ -27,7 +27,7 @@
       "minReaderVersion": 1,
       "sizeBytes": 1710033,
       "sha256": "ed4e228bd5806cabd917a03d6a765b7688809612f82e042f598947bef70a8e61",
-      "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/ABBOTTSMITH.amod",
+      "downloadUrl": "https://raw.githubusercontent.com/yojananyosef/aletheia-catalog/v1.3.0/dist/ABBOTTSMITH.amod",
       "buildTool": "amf-1.0"
     },
     {
@@ -53,7 +53,7 @@
       "minReaderVersion": 1,
       "sizeBytes": 356864,
       "sha256": "470a7efdf4dc0e53be827dcf8a7485f59104317485087621a0462089ddc1d6d2",
-      "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/APF.amod",
+      "downloadUrl": "https://raw.githubusercontent.com/yojananyosef/aletheia-catalog/v1.3.0/dist/APF.amod",
       "buildTool": "amf-1.0"
     },
     {
@@ -79,7 +79,7 @@
       "minReaderVersion": 1,
       "sizeBytes": 3393547,
       "sha256": "374780679b03a32ab08842392d6b0e7b3512baf6bf3c3abe2a6f4e5b53ccdba5",
-      "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/ASV.amod",
+      "downloadUrl": "https://raw.githubusercontent.com/yojananyosef/aletheia-catalog/v1.3.0/dist/ASV.amod",
       "buildTool": "amf-1.0"
     },
     {
@@ -105,7 +105,7 @@
       "minReaderVersion": 1,
       "sizeBytes": 170775,
       "sha256": "8c0f63a78c721be392d7073872eddcd3657008545960f5ce3c8ab844bddf074a",
-      "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/CREEDS.amod",
+      "downloadUrl": "https://raw.githubusercontent.com/yojananyosef/aletheia-catalog/v1.3.0/dist/CREEDS.amod",
       "buildTool": "amf-1.0"
     },
     {
@@ -131,7 +131,7 @@
       "minReaderVersion": 1,
       "sizeBytes": 2293403,
       "sha256": "db3d446afd970b1b0246cd3e7e55f5c53cf1cfebb3276ba27736d668e31a8011",
-      "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/EASTON.amod",
+      "downloadUrl": "https://raw.githubusercontent.com/yojananyosef/aletheia-catalog/v1.3.0/dist/EASTON.amod",
       "buildTool": "amf-1.0"
     },
     {
@@ -157,7 +157,7 @@
       "minReaderVersion": 1,
       "sizeBytes": 188510,
       "sha256": "bb4283b432d1ff2c64f0da1440b28d52d6fe1cbc8d632399a10f668fec3d7d02",
-      "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/HITCHCOCK.amod",
+      "downloadUrl": "https://raw.githubusercontent.com/yojananyosef/aletheia-catalog/v1.3.0/dist/HITCHCOCK.amod",
       "buildTool": "amf-1.0"
     },
     {
@@ -183,7 +183,7 @@
       "minReaderVersion": 1,
       "sizeBytes": 17379003,
       "sha256": "488ad53d62d26cdf86f35273e6666f0e776feedababeb166c6f4115583229fad",
-      "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/ISBE.amod",
+      "downloadUrl": "https://raw.githubusercontent.com/yojananyosef/aletheia-catalog/v1.3.0/dist/ISBE.amod",
       "buildTool": "amf-1.0"
     },
     {
@@ -209,7 +209,7 @@
       "minReaderVersion": 1,
       "sizeBytes": 8719990,
       "sha256": "81a56fb3b73d8314f730e8ed90abce8b8bcf227ea147e42ce61507c845e2a1a0",
-      "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/JFB.amod",
+      "downloadUrl": "https://raw.githubusercontent.com/yojananyosef/aletheia-catalog/v1.3.0/dist/JFB.amod",
       "buildTool": "amf-1.0"
     },
     {
@@ -235,7 +235,7 @@
       "minReaderVersion": 1,
       "sizeBytes": 3553961,
       "sha256": "c3b094c6ae8a1f3642f6c09bcb5afc1910da24f96cd1b82e024b8ebced0d1cad",
-      "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/KJV.amod",
+      "downloadUrl": "https://raw.githubusercontent.com/yojananyosef/aletheia-catalog/v1.3.0/dist/KJV.amod",
       "buildTool": "amf-1.0"
     },
     {
@@ -261,7 +261,7 @@
       "minReaderVersion": 1,
       "sizeBytes": 1446509,
       "sha256": "02f3145f4a51906d7e758cf70a5c7cec502102cd24e773be0a041cac9237029a",
-      "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/NAVE.amod",
+      "downloadUrl": "https://raw.githubusercontent.com/yojananyosef/aletheia-catalog/v1.3.0/dist/NAVE.amod",
       "buildTool": "amf-1.0"
     },
     {
@@ -287,7 +287,7 @@
       "minReaderVersion": 1,
       "sizeBytes": 614431,
       "sha256": "cfbe6b9e08b29b653b1f98c2237fa3d5bb3c84d01a897efbab6fcc7ccc314c9f",
-      "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/SME.amod",
+      "downloadUrl": "https://raw.githubusercontent.com/yojananyosef/aletheia-catalog/v1.3.0/dist/SME.amod",
       "buildTool": "amf-1.0"
     },
     {
@@ -313,7 +313,7 @@
       "minReaderVersion": 1,
       "sizeBytes": 2420521,
       "sha256": "9d714bb1f0eec31df65d2fdba531d14f8201e7321bead555e6b0c4b3f5174477",
-      "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/SMITH.amod",
+      "downloadUrl": "https://raw.githubusercontent.com/yojananyosef/aletheia-catalog/v1.3.0/dist/SMITH.amod",
       "buildTool": "amf-1.0"
     },
     {
@@ -339,7 +339,7 @@
       "minReaderVersion": 1,
       "sizeBytes": 1004016,
       "sha256": "066d72b63911153356fc117c91b75113d636c4f9b28171481a4c689e9be40fbe",
-      "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/STRONGSGREEK.amod",
+      "downloadUrl": "https://raw.githubusercontent.com/yojananyosef/aletheia-catalog/v1.3.0/dist/STRONGSGREEK.amod",
       "buildTool": "amf-1.0"
     },
     {
@@ -365,7 +365,7 @@
       "minReaderVersion": 1,
       "sizeBytes": 1247422,
       "sha256": "4813a4cbb0fe7571ed9b098df7be5c98e988444b6ed6f83c4ba3bd151f54e7b1",
-      "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/STRONGSHEBREW.amod",
+      "downloadUrl": "https://raw.githubusercontent.com/yojananyosef/aletheia-catalog/v1.3.0/dist/STRONGSHEBREW.amod",
       "buildTool": "amf-1.0"
     },
     {
@@ -391,7 +391,7 @@
       "minReaderVersion": 1,
       "sizeBytes": 5432859,
       "sha256": "023ad626356d5d47d76d92268a2f04f7c413236e984fd4353eb40a6326a68a3b",
-      "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/TSK.amod",
+      "downloadUrl": "https://raw.githubusercontent.com/yojananyosef/aletheia-catalog/v1.3.0/dist/TSK.amod",
       "buildTool": "amf-1.0"
     },
     {
@@ -417,7 +417,7 @@
       "minReaderVersion": 1,
       "sizeBytes": 3360372,
       "sha256": "bd96357c4aad216967fda993d6109a978565b550baadd8b727ceb0a577f55b47",
-      "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/VINCENT.amod",
+      "downloadUrl": "https://raw.githubusercontent.com/yojananyosef/aletheia-catalog/v1.3.0/dist/VINCENT.amod",
       "buildTool": "amf-1.0"
     },
     {
@@ -443,7 +443,7 @@
       "minReaderVersion": 1,
       "sizeBytes": 3398987,
       "sha256": "04858bf2c6e84e7c59729bbba7a7a04c51fda8cbfe85ddbfd347dded06df6afe",
-      "downloadUrl": "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download/WEB.amod",
+      "downloadUrl": "https://raw.githubusercontent.com/yojananyosef/aletheia-catalog/v1.3.0/dist/WEB.amod",
       "buildTool": "amf-1.0"
     }
   ]

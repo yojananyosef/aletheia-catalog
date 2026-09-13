@@ -40,3 +40,15 @@ Requiere [Bun](https://bun.sh) ≥ 1.2 (`bun --version`). Los builds son
 deterministas: dos ejecuciones del mismo contenido producen el mismo sha256
 (ver `format/AMF-SPEC.md §1`). `catalog/catalog.json` publicado corresponde al
 release `v1.0.0` (assets `ASV/KJV/SME/SMITH.amod` verificados por sha256).
+
+## Distribución (canal oficial)
+
+- Fuente de verdad: `dist/*.amod` **commiteados en git** + `catalog/catalog.json`.
+- `releaseBase` pineado a tag inmutable con CORS `*`:
+  `https://raw.githubusercontent.com/yojananyosef/aletheia-catalog/vX.Y.Z/dist`.
+- Prohibido `github.com/.../releases/latest/download` como base: no envía
+  `Access-Control-Allow-Origin` y el navegador bloquea la descarga en web
+  (en Android nativo no afecta). Lo impone `tests/catalog-dist.test.ts` + CI.
+- Publicar nueva versión: importar/reconstruir → `bun run catalog` →
+  commit de `dist/` + `catalog.json` → push → `git tag vX.Y.Z` → push del tag.
+  El `sha256` valida el cambio de host: la app consumidora no requiere cambios.

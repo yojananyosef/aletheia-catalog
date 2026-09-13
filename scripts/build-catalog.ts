@@ -2,9 +2,12 @@ import { unzipSync, strFromU8 } from "fflate";
 import { readdirSync, existsSync } from "node:fs";
 import { sha256Hex, validateManifest } from "./lib/amf";
 
+// Canal de distribución: git+raw pineado a tag inmutable (con CORS `*`).
+// No usar github.com/.../releases/... desde web: no envía ACAO y el navegador bloquea.
+// Override para dev: CATALOG_RELEASE_BASE=https://raw.githubusercontent.com/.../main/dist
 const RELEASE_BASE =
   process.env.CATALOG_RELEASE_BASE ??
-  "https://github.com/yojananyosef/aletheia-catalog/releases/latest/download";
+  "https://raw.githubusercontent.com/yojananyosef/aletheia-catalog/v1.3.0/dist";
 
 const defs = (await Bun.file(new URL("./modules-v1.json", import.meta.url)).json()) as any[];
 const distDir = new URL("../dist/", import.meta.url).pathname;

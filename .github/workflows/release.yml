@@ -18,62 +18,49 @@ jobs:
       - run: bun install --frozen-lockfile
       - run: bun run typecheck
       - run: bun test
-      # Construye los 17 módulos verificados (requiere red → CrossWire/ebible/CCEL/sacred-texts).
-      # Los propios import-*.ts hacen doble build y comparan sha256 (determinismo).
-      - run: bun run import --module=ASV
-      - run: bun run import --module=KJV
-      - run: bun run import --module=SME
-      - run: bun run import --module=SMITH
-      - run: bun run import --module=JFB
-      - run: bun run import --module=WEB
-      - run: bun run import --module=HITCHCOCK
-      - run: bun run import --module=EASTON
-      - run: bun run import --module=NAVE
-      - run: bun run import --module=STRONGSGREEK
-      - run: bun run import --module=STRONGSHEBREW
-      - run: bun run import --module=ABBOTTSMITH
-      - run: bun run import --module=ISBE
-      - run: bun run import --module=TSK
-      - run: bun run import:ccel --module=VINCENT
-      - run: bun run import:ccel --module=APF
-      - run: bun run import:ccel --module=CREEDS
-      - run: bun run catalog
-      - name: Verificar catálogo contra módulos
+      # Fuente de verdad: dist/*.amod commiteados en git (canal git+raw con CORS *).
+      # Ya no se reconstruye desde la red ni se suben .amod como assets:
+      # los import-*.ts se ejecutan en local y commitean el resultado.
+      - name: Verificar catálogo contra módulos commiteados
         run: |
           for m in ASV KJV SME SMITH JFB WEB HITCHCOCK EASTON NAVE STRONGSGREEK STRONGSHEBREW ABBOTTSMITH ISBE TSK VINCENT APF CREEDS; do
+            test -f "dist/$m.amod" || (echo "falta dist/$m.amod commiteado" && exit 1)
             sha=$(sha256sum dist/$m.amod | cut -d' ' -f1)
             cat catalog/catalog.json | grep -q "$sha" || (echo "sha256 de $m no está en catalog.json" && exit 1)
           done
           echo "catálogo verificado ✓"
+      - name: Verificar releaseBase pineado al tag
+        run: |
+          TAG="${{ github.ref_name }}"
+          EXPECTED="https://raw.githubusercontent.com/yojananyosef/aletheia-catalog/$TAG/dist"
+          ACTUAL=$(python3 -c "import json;print(json.load(open('catalog/catalog.json'))['releaseBase'])")
+          test "$ACTUAL" = "$EXPECTED" || (echo "releaseBase=$ACTUAL, esperado=$EXPECTED" && exit 1)
+          python3 -c "
+          import json,sys
+          c=json.load(open('catalog/catalog.json'))
+          bad=[m['id'] for m in c['modules'] if not m['downloadUrl'].startswith(c['releaseBase']+'/')]
+          assert not bad, f'downloadUrl fuera de releaseBase: {bad}'
+          assert 'github.com' not in c['releaseBase'], 'releaseBase sin CORS (releases) prohibido'
+          "
+          echo "releaseBase pineado a $TAG ✓"
+      - name: Verificar CORS en el canal de distribución
+        run: |
+          TAG="${{ github.ref_name }}"
+          BASE="https://raw.githubusercontent.com/yojananyosef/aletheia-catalog/$TAG/dist"
+          # Muestra pequeña (168K) + grande (17M): el canal debe servir ambos con CORS *
+          for u in "$BASE/CREEDS.amod" "$BASE/ISBE.amod"; do
+            cors=$(curl -sI -o /dev/null -w '%header{access-control-allow-origin}' "$u" || true)
+            test "$cors" = "*" || (echo "sin ACAO:* en $u (recibido: '$cors')" && exit 1)
+          done
+          # catalog.json vive en la rama, no en dist/: se verifica por separado
+          cors=$(curl -sI -o /dev/null -w '%header{access-control-allow-origin}' \
+            "https://raw.githubusercontent.com/yojananyosef/aletheia-catalog/$TAG/catalog/catalog.json" || true)
+          test "$cors" = "*" || (echo "sin ACAO:* en catalog.json (recibido: '$cors')" && exit 1)
+          echo "CORS * verificado ✓"
+      # El Release conserva solo catalog.json como acta/changelog.
+      # Los .amod se distribuyen vía git+raw (CORS *), no como assets.
       - uses: softprops/action-gh-release@v2
         with:
           files: |
-            dist/ASV.amod
-            dist/KJV.amod
-            dist/SME.amod
-            dist/SMITH.amod
-            dist/JFB.amod
-            dist/WEB.amod
-            dist/HITCHCOCK.amod
-            dist/EASTON.amod
-            dist/NAVE.amod
-            dist/STRONGSGREEK.amod
-            dist/STRONGSHEBREW.amod
-            dist/ABBOTTSMITH.amod
-            dist/ISBE.amod
-            dist/TSK.amod
-            dist/VINCENT.amod
-            dist/APF.amod
-            dist/CREEDS.amod
             catalog/catalog.json
           generate_release_notes: true
-      # El catálogo regenerado (con los shas del release) vuelve a main para que
-      # la app siempre lea un catalog.json coherente con releases/latest/download.
-      - name: Publicar catalog.json actualizado en main
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add catalog/catalog.json
-          git diff --cached --quiet && echo "sin cambios" && exit 0
-          git commit -m "catalog: actualizar a ${{ github.ref_name }} [skip ci]"
-          git push origin HEAD:main

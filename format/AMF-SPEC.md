@@ -240,8 +240,11 @@ Reglas:
 ## 5. Ciclo de vida
 
 1. **Construcción**: ETL determinista → `.amod` en `dist/` → doble build + comparación de sha256.
-2. **Publicación**: GitHub Release adjuntando `dist/<id>.amod`; `catalog/catalog.json`
-   actualizado con `sha256`, `sizeBytes` y `downloadUrl`.
+2. **Publicación**: `dist/<id>.amod` commiteado en git; `catalog/catalog.json`
+   actualizado con `sha256`, `sizeBytes` y `downloadUrl`. El canal es
+   `https://raw.githubusercontent.com/.../<tag>/dist` (CORS `*`, tag inmutable).
+   Prohibido `github.com/.../releases/...` como `releaseBase`: no envía
+   `Access-Control-Allow-Origin` y rompe la descarga en web.
 3. **Consumo**: la app descarga, verifica sha256, descomprime y abre `content.db` con
    `immutable=1` (solo lectura, sin journal).
 

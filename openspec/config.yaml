@@ -8,7 +8,8 @@ context: |
   Lote v1 = espejo estricto del free library de Logos: ASV, KJV, WEB, JFB, Vincent, SME,
   APF, Creeds, Smith — todo Public Domain.
   Politica de contenido: modelo CrossWire (vetting PD/CC, disclaimers, contacto público).
-  Distribución: GitHub Releases + catalog/catalog.json (sha256 + downloadUrl).
+  Distribución: dist/*.amod commiteados en git + catalog/catalog.json (sha256 + downloadUrl),
+  servidos vía raw.githubusercontent.com pineado a tag inmutable (CORS *).
   Convenciones: español en docs/UI, código sin comentarios salvo necesidad real,
   TypeScript strict, commits convencionales.
 
